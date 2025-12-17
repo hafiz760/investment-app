@@ -1,23 +1,36 @@
 "use client";
 
 export default function StatsSection() {
+  const stats = [
+    { value: "5+", label: "Business Sectors", description: "Diversified operations" },
+    { value: "350+", label: "Active Investors", description: "Growing community" },
+    { value: "25+", label: "Running Projects", description: "Across all sectors" },
+    { value: "₨50M+", label: "Capital Managed", description: "Secure investments" }
+  ];
+
   return (
-    <section className="bg-background/60 border-y border-border">
-      <div className="container mx-auto px-4 lg:px-8 py-6 grid sm:grid-cols-4 gap-4 text-center text-xs sm:text-sm">
-        {[
-          ["25+", "Running Projects"],
-          ["387+", "Satisfied Clients"],
-          ["1,300+", "Monthly Payouts"],
-          ["258+", "Active Investors"],
-        ].map(([value, label]) => (
-          <div
-            key={label}
-            className="rounded-md border border-border/70 bg-card/70 py-3"
-          >
-            <div className="text-lg font-semibold text-accent">{value}</div>
-            <div className="text-[11px] text-muted-foreground">{label}</div>
-          </div>
-        ))}
+    <section className="section-padding py-16 bg-gradient-to-r from-[#D4AF37] to-[#C4A037]">
+      <div className="container mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          {stats.map((stat, index) => (
+            <div
+              key={stat.label}
+              className="text-center"
+              data-aos="fade-up"
+              data-aos-delay={index * 100}
+            >
+              <div className="text-4xl lg:text-5xl font-bold text-[#0F1C2E] mb-2">
+                {stat.value}
+              </div>
+              <div className="text-[#0F1C2E] font-semibold mb-1">
+                {stat.label}
+              </div>
+              <div className="text-[#0F1C2E]/70 text-sm">
+                {stat.description}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

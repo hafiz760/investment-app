@@ -15,7 +15,7 @@ import ContactSection from "@/components/sections/ContactSection";
 
 export default function HomePage() {
   return (
-    <main className="text-foreground">
+    <main className="text-foreground overflow-x-hidden w-full">
       <HeroSection />
       <HighlightCardsSection />
       <ServicesSection />

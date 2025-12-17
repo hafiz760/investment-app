@@ -1,22 +1,54 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { ArrowRight, Phone } from "lucide-react";
+import { PrimaryButton, OutlineButton, SectionBadge } from "@/components/common";
 
 export default function CtaBannerSection() {
   return (
-    <section className="bg-gradient-to-r from-primary/90 to-background border-y border-border">
-      <div className="container mx-auto px-4 lg:px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-accent-foreground/80">
-            Start Your Journey
+    <section className="py-20 lg:py-32 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0F1C2E] via-[#1a2942] to-[#0F1C2E]" />
+      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
+      
+      <div className="section-padding container mx-auto relative z-10">
+        <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
+          <SectionBadge className="mb-6">Ready to Invest?</SectionBadge>
+          
+          <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6 leading-tight">
+            Start Your Investment Journey{" "}
+            <span className="text-[#D4AF37]">Today</span>
+          </h2>
+          
+          <p className="text-white/70 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+            Join hundreds of satisfied investors earning consistent ROI through our diversified 
+            business portfolio. Transparent operations, regular payouts, and professional management.
           </p>
-          <h3 className="text-xl sm:text-2xl font-semibold text-primary-foreground">
-            Start Your Journey, Build Wealth Now
-          </h3>
+          
+          <div className="flex flex-wrap justify-center gap-4 mb-12">
+            <PrimaryButton className="px-10 py-7 text-lg rounded-md group">
+              View Investment Plans
+              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </PrimaryButton>
+            <OutlineButton className="px-10 py-7 text-lg rounded-md">
+              <Phone className="mr-2 h-5 w-5" />
+              Schedule Call
+            </OutlineButton>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+            <div className="bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-lg p-6">
+              <div className="text-3xl font-bold text-[#D4AF37] mb-2">12-22%</div>
+              <p className="text-white/70 text-sm">Annual ROI Range</p>
+            </div>
+            <div className="bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-lg p-6">
+              <div className="text-3xl font-bold text-[#D4AF37] mb-2">₨50K</div>
+              <p className="text-white/70 text-sm">Minimum Investment</p>
+            </div>
+            <div className="bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-lg p-6">
+              <div className="text-3xl font-bold text-[#D4AF37] mb-2">100%</div>
+              <p className="text-white/70 text-sm">Transparent Process</p>
+            </div>
+          </div>
         </div>
-        <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
-          Schedule Consultation
-        </Button>
       </div>
     </section>
   );

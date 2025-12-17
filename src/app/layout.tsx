@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "aos/dist/aos.css";
 import { MainNav } from "@/components/layout/MainNav";
+import { Footer } from "@/components/layout/Footer";
+import { AOSInit } from "@/components/layout/AOSInit";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,9 +27,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="overflow-x-hidden">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased text-foreground`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased text-foreground overflow-x-hidden`}
         style={{
           backgroundImage: 'url("/images/background.jpg")',
           backgroundRepeat: "no-repeat",
@@ -35,9 +38,11 @@ export default function RootLayout({
           backgroundAttachment: "fixed",
         }}
       >
+        <AOSInit />
         <div className="fixed inset-0 -z-10 bg-[#020617]/60" />
         <MainNav />
         <div className="min-h-screen">{children}</div>
+        <Footer />
       </body>
     </html>
   );

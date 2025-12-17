@@ -1,93 +1,169 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import { PrimaryButton, SectionBadge } from "@/components/common";
 
 export default function ContactSection() {
   return (
-    <section id="contact" className="bg-background/90 border-t border-border">
-      <div className="container mx-auto px-4 lg:px-8 py-10 space-y-8">
-        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8">
-          <div className="space-y-4 text-sm">
-            <p className="text-xs uppercase tracking-[0.3em] text-accent">
-              Begin Your Investment Journey
-            </p>
-            <h2 className="text-xl sm:text-2xl font-semibold">
-              Start Your Investment Today
-            </h2>
-            <p className="text-muted-foreground max-w-xl text-xs sm:text-sm">
-              Share your details and our team will contact you with suitable
-              investment options tailored to your profile.
-            </p>
+    <section id="contact" className="section-padding py-20 lg:py-32 bg-gradient-to-b from-transparent to-[#0F1C2E]/50">
+      <div className="container mx-auto">
+        <div className="text-center mb-16" data-aos="fade-up">
+          <SectionBadge className="mb-2">Get In Touch</SectionBadge>
+          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
+            Start Your Investment Journey Today
+          </h2>
+          <p className="text-white/70 max-w-2xl mx-auto text-lg">
+            Have questions? Want to invest? Our team is ready to assist you with all your queries.
+          </p>
+        </div>
 
-            <form className="grid sm:grid-cols-2 gap-3 text-xs sm:text-sm">
-              <input
-                className="rounded-md border border-border bg-background px-3 py-2 text-foreground placeholder:text-muted-foreground/60"
-                placeholder="Full Name"
-              />
-              <input
-                className="rounded-md border border-border bg-background px-3 py-2 text-foreground placeholder:text-muted-foreground/60"
-                placeholder="Email Address"
-              />
-              <input
-                className="rounded-md border border-border bg-background px-3 py-2 text-foreground placeholder:text-muted-foreground/60"
-                placeholder="Phone Number"
-              />
-              <input
-                className="rounded-md border border-border bg-background px-3 py-2 text-foreground placeholder:text-muted-foreground/60"
-                placeholder="Preferred Investment Amount"
-              />
-              <textarea
-                className="sm:col-span-2 rounded-md border border-border bg-background px-3 py-2 text-foreground placeholder:text-muted-foreground/60 min-h-[80px]"
-                placeholder="Tell us briefly about your investment goals"
-              />
-              <Button className="sm:col-span-2 bg-primary text-primary-foreground hover:bg-primary/90">
-                Submit Request
-              </Button>
+        <div className="grid lg:grid-cols-2 gap-12">
+          {/* Contact Form */}
+          <div className="bg-gradient-to-br from-[#0F1C2E] to-[#1a2942] border border-[#D4AF37]/30 rounded-2xl p-8" data-aos="fade-right">
+            <h3 className="text-2xl font-bold text-white mb-6">Send Us a Message</h3>
+            <form className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-white/70 text-sm mb-2 block">Full Name *</label>
+                  <Input 
+                    placeholder="Your Name" 
+                    className="bg-[#0F1C2E]/50 border-[#D4AF37]/30 text-white placeholder:text-white/40 focus:border-[#D4AF37]"
+                  />
+                </div>
+                <div>
+                  <label className="text-white/70 text-sm mb-2 block">Email Address *</label>
+                  <Input 
+                    type="email"
+                    placeholder="your@email.com" 
+                    className="bg-[#0F1C2E]/50 border-[#D4AF37]/30 text-white placeholder:text-white/40 focus:border-[#D4AF37]"
+                  />
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-white/70 text-sm mb-2 block">Phone Number *</label>
+                  <Input 
+                    placeholder="+92 300 0000000" 
+                    className="bg-[#0F1C2E]/50 border-[#D4AF37]/30 text-white placeholder:text-white/40 focus:border-[#D4AF37]"
+                  />
+                </div>
+                <div>
+                  <label className="text-white/70 text-sm mb-2 block">Investment Amount</label>
+                  <Input 
+                    placeholder="₨ 50,000" 
+                    className="bg-[#0F1C2E]/50 border-[#D4AF37]/30 text-white placeholder:text-white/40 focus:border-[#D4AF37]"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-white/70 text-sm mb-2 block">Interested In</label>
+                <select className="w-full bg-[#0F1C2E]/50 border border-[#D4AF37]/30 text-white rounded-md px-3 py-2 focus:border-[#D4AF37] focus:outline-none">
+                  <option>Investment Plans</option>
+                  <option>Coal Dealership</option>
+                  <option>Cement Dealership</option>
+                  <option>Bricks Supply</option>
+                  <option>Property Dealing</option>
+                  <option>Forex & IT Services</option>
+                  <option>General Inquiry</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="text-white/70 text-sm mb-2 block">Message</label>
+                <Textarea 
+                  placeholder="Tell us about your investment goals or inquiry..." 
+                  rows={5}
+                  className="bg-[#0F1C2E]/50 border-[#D4AF37]/30 text-white placeholder:text-white/40 focus:border-[#D4AF37]"
+                />
+              </div>
+
+              <PrimaryButton className="w-full py-6 text-base rounded-md">
+                Submit Inquiry
+              </PrimaryButton>
+
+              <p className="text-white/50 text-xs text-center">
+                By submitting this form, you agree to our Terms & Conditions and Privacy Policy.
+              </p>
             </form>
           </div>
 
-          <div className="grid sm:grid-cols-3 gap-6 text-xs">
-            <div>
-              <h3 className="font-semibold text-card-foreground mb-2">
-                InvestaX Group
-              </h3>
-              <p className="text-muted-foreground">
-                Coal, cement, bricks, property, forex & tech-backed investment
-                opportunities under one group.
-              </p>
+          {/* Contact Information */}
+          <div className="space-y-8" data-aos="fade-left">
+            <div className="bg-gradient-to-br from-[#0F1C2E] to-[#1a2942] border border-[#D4AF37]/30 rounded-2xl p-8">
+              <h3 className="text-2xl font-bold text-white mb-6">Contact Information</h3>
+              
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-[#D4AF37]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-6 h-6 text-[#D4AF37]" />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-semibold mb-1">Office Address</h4>
+                    <p className="text-white/70">
+                      Business Avenue, Main Commercial Area<br />
+                      Karachi, Pakistan
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-[#D4AF37]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-6 h-6 text-[#D4AF37]" />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-semibold mb-1">Phone Number</h4>
+                    <p className="text-white/70">
+                      +92 300 0000000<br />
+                      +92 21 0000000
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-[#D4AF37]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Mail className="w-6 h-6 text-[#D4AF37]" />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-semibold mb-1">Email Address</h4>
+                    <p className="text-white/70">
+                      info@investax-group.com<br />
+                      invest@investax-group.com
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-[#D4AF37]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Clock className="w-6 h-6 text-[#D4AF37]" />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-semibold mb-1">Working Hours</h4>
+                    <p className="text-white/70">
+                      Monday - Saturday: 10:00 AM - 6:00 PM<br />
+                      Sunday: Closed
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div>
-              <h3 className="font-semibold text-card-foreground mb-2">
-                Contact
-              </h3>
-              <p className="text-muted-foreground">
-                info@investax-group.com
-                <br />
-                +92 300 0000000
-                <br />
-                Mon–Sat, 10:00am–6:00pm
+
+            {/* WhatsApp CTA */}
+            <div className="bg-gradient-to-br from-[#D4AF37] to-[#C4A037] rounded-2xl p-8 text-center">
+              <h4 className="text-2xl font-bold text-[#0F1C2E] mb-4">
+                Need Quick Assistance?
+              </h4>
+              <p className="text-[#0F1C2E]/80 mb-6">
+                Chat with us on WhatsApp for instant support
               </p>
-            </div>
-            <div>
-              <h3 className="font-semibold text-card-foreground mb-2">
-                Office
-              </h3>
-              <p className="text-muted-foreground">
-                Business Avenue,
-                <br />
-                Main Commercial Area,
-                <br />
-                Karachi, Pakistan
-              </p>
+              <PrimaryButton className="bg-[#0F1C2E] text-white hover:bg-[#1a2942] px-8 py-6 text-base rounded-md w-full">
+                💬 Chat on WhatsApp
+              </PrimaryButton>
             </div>
           </div>
-        </div>
-
-        <div className="flex flex-col sm:flex-row justify-between gap-2 text-[11px] text-muted-foreground">
-          <p>
-            © {new Date().getFullYear()} InvestaX Group. All Rights Reserved.
-          </p>
-          <p>Terms & Conditions • Privacy Policy</p>
         </div>
       </div>
     </section>

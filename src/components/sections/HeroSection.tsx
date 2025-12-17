@@ -1,105 +1,75 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Play, ArrowRight } from "lucide-react";
-import Image from "next/image";
-
-function StatPill({ label }: { label: string }) {
-  return (
-    <div className="inline-flex items-center rounded-full border border-border/70 bg-card/70 px-3 py-1 text-[11px] text-muted-foreground gap-1">
-      <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-      {label}
-    </div>
-  );
-}
-
-function SocialChip({ label }: { label: string }) {
-  return (
-    <span className="px-2 py-1 rounded-full border border-border/60 bg-card/60 text-[11px] hover:border-accent hover:text-accent cursor-pointer">
-      {label}
-    </span>
-  );
-}
+import { TrendingUp, Shield, Users, Award } from "lucide-react";
+import { PrimaryButton, OutlineButton, SectionBadge } from "@/components/common";
 
 export default function HeroSection() {
   return (
     <section
       id="home"
-      className="container mx-auto px-4 lg:px-8 py-12 lg:py-20 grid lg:grid-cols-[1.1fr_1fr] gap-10 items-center"
+      className="section-padding py-20 lg:py-32"
     >
-      <div className="space-y-6">
-        <p className="text-xs uppercase tracking-[0.3em] text-accent-foreground/80">
-          Smart Investments • Real Growth
-        </p>
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-semibold leading-tight text-balance">
-          SMART INVESTMENT,
-          <span className="block text-accent ml-1 lg:ml-0">LASTING GROWTH</span>
-        </h1>
-        <p className="text-sm sm:text-base text-muted-foreground max-w-xl">
-          Diversified investments across coal, cement, real estate, bricks,
-          forex, and technology-backed projects — designed to deliver consistent
-          ROI for modern investors.
-        </p>
+      <div className="container mx-auto grid lg:grid-cols-2 gap-12 items-center">
+        {/* Left Content */}
+        <div className="space-y-8" data-aos="fade-right">
+          <SectionBadge>Diversified Business Group</SectionBadge>
+          
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight text-white">
+            Building Wealth Through{" "}
+            <span className="text-[#D4AF37]">Diversified Investments</span>
+          </h1>
+          
+          <p className="text-lg text-white/70 max-w-xl leading-relaxed">
+            A trusted group operating across Coal, Cement, Bricks, Real Estate, Forex & IT sectors. 
+            Offering secure ROI-based investment opportunities with transparent returns.
+          </p>
 
-        {/* Stats */}
-        <div className="flex flex-wrap gap-4">
-          <StatPill label="25+ Active Projects" />
-          <StatPill label="97% Client Satisfaction" />
-          <StatPill label="350+ Investors" />
-        </div>
-
-        {/* CTAs */}
-        <div className="flex flex-wrap items-center gap-4 pt-2">
-          <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
-            Start Investing
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            className="border-muted-foreground/40 text-muted-foreground hover:bg-muted/10"
-          >
-            <Play className="mr-2 h-4 w-4" /> How It Works
-          </Button>
-        </div>
-
-        {/* Social row */}
-        <div className="pt-4 flex items-center gap-3 text-xs text-muted-foreground">
-          <span>Follow us:</span>
-          <SocialChip label="Facebook" />
-          <SocialChip label="LinkedIn" />
-          <SocialChip label="YouTube" />
-        </div>
-      </div>
-
-      {/* Hero Image / Card */}
-      <div className="relative">
-        <Card className="bg-card/90 border-border/60 shadow-xl overflow-hidden">
-          <div className="relative h-64 sm:h-80">
-            <Image
-              src="/images/hero-1.jpg"
-              alt="Investor Meeting"
-              fill
-              className="object-cover"
-            />
+          {/* Key Features */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-[#D4AF37]/10 flex items-center justify-center">
+                <Shield className="w-5 h-5 text-[#D4AF37]" />
+              </div>
+              <span className="text-white/90 text-sm">Secure & Legal</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-[#D4AF37]/10 flex items-center justify-center">
+                <TrendingUp className="w-5 h-5 text-[#D4AF37]" />
+              </div>
+              <span className="text-white/90 text-sm">High ROI</span>
+            </div>
           </div>
-          <CardContent className="p-4 flex items-center justify-between text-xs">
-            <div>
-              <p className="text-muted-foreground uppercase tracking-wide">
-                Portfolio Snapshot
-              </p>
-              <p className="text-sm font-medium text-accent">
-                Multi-Sector Investments
-              </p>
-            </div>
-            <div className="grid gap-1 text-right">
-              <span className="text-xs text-muted-foreground">
-                Managed Capital
-              </span>
-              <span className="text-lg font-semibold">$5.8M</span>
-            </div>
-          </CardContent>
-        </Card>
+
+          {/* CTAs */}
+          <div className="flex flex-wrap items-center gap-4">
+            <PrimaryButton className="px-8 py-6 text-base rounded-md">
+              Start Investing
+            </PrimaryButton>
+            <OutlineButton className="px-8 py-6 text-base rounded-md">
+              View Business Divisions
+            </OutlineButton>
+          </div>
+        </div>
+
+        {/* Right Stats Cards */}
+        <div className="grid grid-cols-2 gap-6" data-aos="fade-left">
+          <div className="bg-gradient-to-br from-[#0F1C2E] to-[#1a2942] border border-[#D4AF37]/20 rounded-xl p-8 text-center hover:border-[#D4AF37]/50 transition-all">
+            <div className="text-5xl font-bold text-[#D4AF37] mb-2">5+</div>
+            <div className="text-white/70 text-sm">Business Sectors</div>
+          </div>
+          <div className="bg-gradient-to-br from-[#0F1C2E] to-[#1a2942] border border-[#D4AF37]/20 rounded-xl p-8 text-center hover:border-[#D4AF37]/50 transition-all">
+            <div className="text-5xl font-bold text-[#D4AF37] mb-2">25+</div>
+            <div className="text-white/70 text-sm">Active Projects</div>
+          </div>
+          <div className="bg-gradient-to-br from-[#0F1C2E] to-[#1a2942] border border-[#D4AF37]/20 rounded-xl p-8 text-center hover:border-[#D4AF37]/50 transition-all">
+            <div className="text-5xl font-bold text-[#D4AF37] mb-2">350+</div>
+            <div className="text-white/70 text-sm">Satisfied Investors</div>
+          </div>
+          <div className="bg-gradient-to-br from-[#0F1C2E] to-[#1a2942] border border-[#D4AF37]/20 rounded-xl p-8 text-center hover:border-[#D4AF37]/50 transition-all">
+            <div className="text-5xl font-bold text-[#D4AF37] mb-2">97%</div>
+            <div className="text-white/70 text-sm">Success Rate</div>
+          </div>
+        </div>
       </div>
     </section>
   );
