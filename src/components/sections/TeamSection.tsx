@@ -1,6 +1,7 @@
 "use client";
 
 import { Facebook, Twitter, Linkedin } from "lucide-react";
+import { SectionBadge } from "@/components/common";
 
 const teamMembers = [
   { name: "David Miller", role: "Senior UX Designer" },
@@ -16,9 +17,7 @@ export default function TeamSection() {
     <section id="team" className="section-padding py-20 lg:py-32">
       <div className="container mx-auto">
         <div className="text-center mb-16" data-aos="fade-up">
-          <p className="text-[#9EFF00] text-sm font-semibold uppercase tracking-wider mb-2">
-            Our Team
-          </p>
+          <SectionBadge className="mb-2">Our Team</SectionBadge>
           <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
             Our Dedicated Finance Team
           </h2>
@@ -32,7 +31,7 @@ export default function TeamSection() {
           {teamMembers.map((member, index) => (
             <div
               key={member.name}
-              className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden group hover:border-[#9EFF00]/50 transition-all"
+              className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden group hover:border-[#D4AF37]/50 transition-all"
               data-aos="fade-up"
               data-aos-delay={index * 100}
             >
@@ -51,19 +50,19 @@ export default function TeamSection() {
                 <div className="flex justify-center gap-3">
                   <a 
                     href="#" 
-                    className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#9EFF00] hover:text-black hover:border-[#9EFF00] transition-all"
+                    className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#D4AF37] hover:text-[#0F1C2E] hover:border-[#D4AF37] transition-all"
                   >
                     <Facebook className="w-4 h-4" />
                   </a>
                   <a 
                     href="#" 
-                    className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#9EFF00] hover:text-black hover:border-[#9EFF00] transition-all"
+                    className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#D4AF37] hover:text-[#0F1C2E] hover:border-[#D4AF37] transition-all"
                   >
                     <Twitter className="w-4 h-4" />
                   </a>
                   <a 
                     href="#" 
-                    className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#9EFF00] hover:text-black hover:border-[#9EFF00] transition-all"
+                    className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#D4AF37] hover:text-[#0F1C2E] hover:border-[#D4AF37] transition-all"
                   >
                     <Linkedin className="w-4 h-4" />
                   </a>

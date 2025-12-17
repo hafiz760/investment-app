@@ -70,7 +70,7 @@ export default function AboutSection() {
             <div className="bg-gradient-to-br from-[#0F1C2E] to-[#1a2942] border border-[#D4AF37]/30 rounded-2xl p-8">
               <h3 className="text-2xl font-bold text-white mb-4">Our Vision</h3>
               <p className="text-white/70 leading-relaxed">
-                To become Pakistan's most trusted diversified business group, known for 
+                To become Pakistan&apos;s most trusted diversified business group, known for 
                 excellence in operations, transparency in dealings, and consistent returns 
                 for our stakeholders.
               </p>

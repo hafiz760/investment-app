@@ -83,7 +83,7 @@ export default function TestimonialsSection() {
                 </div>
 
                 <p className="text-white/80 leading-relaxed mb-6 italic">
-                  "{testimonial.content}"
+                  {testimonial.content}
                 </p>
                 
                 <div className="border-t border-[#D4AF37]/20 pt-4">
