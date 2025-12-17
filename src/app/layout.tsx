@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { MainNav } from "@/components/layout/MainNav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,15 +20,24 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased text-foreground`}
+        style={{
+          backgroundImage: 'url("/images/background.jpg")',
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "top center",
+          backgroundAttachment: "fixed",
+        }}
       >
-        {children}
+        <div className="fixed inset-0 -z-10 bg-[#020617]/60" />
+        <MainNav />
+        <div className="min-h-screen">{children}</div>
       </body>
     </html>
   );
