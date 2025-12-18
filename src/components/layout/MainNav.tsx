@@ -69,13 +69,13 @@ export function MainNav() {
           {/* Center nav */}
           <nav className="flex items-center gap-8 text-[15px] font-medium">
             {mainLinks.map((link) => (
-              <a
+              <Link
                 key={link.label}
                 href={link.href}
                 className="text-white/90 hover:text-[#D4AF37] transition-colors"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
 
             {dropdowns.map((group) => (
@@ -95,19 +95,19 @@ export function MainNav() {
                       asChild
                       className="cursor-pointer hover:bg-[#D4AF37]/10 hover:text-[#D4AF37] focus:bg-[#D4AF37]/10 focus:text-[#D4AF37]"
                     >
-                      <a href={item.href}>{item.label}</a>
+                      <Link href={item.href}>{item.label}</Link>
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
             ))}
 
-            <a
+            <Link
               href="/contact"
               className="text-white/90 hover:text-[#D4AF37] transition-colors"
             >
               Contact Us
-            </a>
+            </Link>
           </nav>
 
           {/* CTA */}
@@ -148,14 +148,14 @@ export function MainNav() {
         <div className="lg:hidden mt-2 mx-4 rounded-2xl border border-[#D4AF37]/30 bg-[#0F1C2E]/95 backdrop-blur-xl">
           <div className="px-4 py-3 flex flex-col gap-2 text-sm">
             {mainLinks.map((link) => (
-              <a
+              <Link
                 key={link.label}
                 href={link.href}
                 className="py-2 text-white/90 hover:text-[#D4AF37] border-b border-[#D4AF37]/20 last:border-b-0"
                 onClick={() => setMobileOpen(false)}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
 
             {dropdowns.map((group) => (
@@ -166,26 +166,26 @@ export function MainNav() {
                 </summary>
                 <div className="pl-3 pb-2 flex flex-col gap-1">
                   {group.items.map((item) => (
-                    <a
+                    <Link
                       key={item.label}
                       href={item.href}
                       className="py-1 text-white/70 hover:text-[#D4AF37]"
                       onClick={() => setMobileOpen(false)}
                     >
                       {item.label}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </details>
             ))}
 
-            <a
+            <Link
               href="/contact"
               className="py-2 text-white/90 hover:text-[#D4AF37] border-b border-[#D4AF37]/20"
               onClick={() => setMobileOpen(false)}
             >
               Contact Us
-            </a>
+            </Link>
 
             <Button className="mt-2 w-full rounded-full bg-transparent border-2 border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0F1C2E]">
               Invest Now

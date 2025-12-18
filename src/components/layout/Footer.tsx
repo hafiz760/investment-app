@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from "lucide-react";
 
 export function Footer() {
@@ -52,11 +53,11 @@ export function Footer() {
           <div>
             <h3 className="text-white font-bold text-lg mb-4">Business Divisions</h3>
             <ul className="space-y-2 text-white/70 text-sm">
-              <li><a href="/services" className="hover:text-[#D4AF37] transition-colors">All Services</a></li>
-              <li><a href="/services#coal" className="hover:text-[#D4AF37] transition-colors">Coal Dealership</a></li>
-              <li><a href="/services#cement" className="hover:text-[#D4AF37] transition-colors">Cement Dealership</a></li>
-              <li><a href="/services#bricks" className="hover:text-[#D4AF37] transition-colors">Bricks Supply</a></li>
-              <li><a href="/services#property" className="hover:text-[#D4AF37] transition-colors">Property Dealing</a></li>
+              <li><Link href="/services" className="hover:text-[#D4AF37] transition-colors">All Services</Link></li>
+              <li><Link href="/services#coal" className="hover:text-[#D4AF37] transition-colors">Coal Dealership</Link></li>
+              <li><Link href="/services#cement" className="hover:text-[#D4AF37] transition-colors">Cement Dealership</Link></li>
+              <li><Link href="/services#bricks" className="hover:text-[#D4AF37] transition-colors">Bricks Supply</Link></li>
+              <li><Link href="/services#property" className="hover:text-[#D4AF37] transition-colors">Property Dealing</Link></li>
             </ul>
           </div>
 
@@ -64,11 +65,11 @@ export function Footer() {
           <div>
             <h3 className="text-white font-bold text-lg mb-4">Quick Links</h3>
             <ul className="space-y-2 text-white/70 text-sm">
-              <li><a href="/about" className="hover:text-[#D4AF37] transition-colors">About Us</a></li>
-              <li><a href="/investment" className="hover:text-[#D4AF37] transition-colors">Investment Plans</a></li>
-              <li><a href="/team" className="hover:text-[#D4AF37] transition-colors">Our Team</a></li>
-              <li><a href="/testimonials" className="hover:text-[#D4AF37] transition-colors">Testimonials</a></li>
-              <li><a href="/faqs" className="hover:text-[#D4AF37] transition-colors">FAQs</a></li>
+              <li><Link href="/about" className="hover:text-[#D4AF37] transition-colors">About Us</Link></li>
+              <li><Link href="/investment" className="hover:text-[#D4AF37] transition-colors">Investment Plans</Link></li>
+              <li><Link href="/team" className="hover:text-[#D4AF37] transition-colors">Our Team</Link></li>
+              <li><Link href="/testimonials" className="hover:text-[#D4AF37] transition-colors">Testimonials</Link></li>
+              <li><Link href="/faqs" className="hover:text-[#D4AF37] transition-colors">FAQs</Link></li>
             </ul>
           </div>
 
