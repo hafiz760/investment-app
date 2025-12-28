@@ -111,12 +111,14 @@ export function MainNav() {
           </nav>
 
           {/* CTA */}
-          <Button
-            variant="outline"
-            className="rounded-full border-2 border-[#D4AF37] px-7 py-2 h-auto bg-transparent text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0F1C2E] font-medium text-[15px]"
-          >
-            Invest Now
-          </Button>
+          <Link href="/login">
+            <Button
+              variant="outline"
+              className="rounded-full border-2 border-[#D4AF37] px-7 py-2 h-auto bg-transparent text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0F1C2E] font-medium text-[15px]"
+            >
+              Invest Now
+            </Button>
+          </Link>
         </div>
 
         {/* MOBILE BAR */}
@@ -187,9 +189,11 @@ export function MainNav() {
               Contact Us
             </Link>
 
-            <Button className="mt-2 w-full rounded-full bg-transparent border-2 border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0F1C2E]">
-              Invest Now
-            </Button>
+            <Link href="/login" onClick={() => setMobileOpen(false)}>
+              <Button className="mt-2 w-full rounded-full bg-transparent border-2 border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0F1C2E]">
+                Invest Now
+              </Button>
+            </Link>
           </div>
         </div>
       )}
