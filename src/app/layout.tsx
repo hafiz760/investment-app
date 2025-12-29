@@ -22,6 +22,8 @@ export const metadata: Metadata = {
 };
 
 import { StoreProvider } from "@/components/common/StoreProvider";
+import { Providers } from "./providers";
+import { Toaster } from "sonner";
 
 export default function RootLayout({
   children,
@@ -40,13 +42,12 @@ export default function RootLayout({
           backgroundAttachment: "fixed",
         }}
       >
-        <StoreProvider>
+        <Providers>
           <AOSInit />
           <div className="fixed inset-0 -z-10 bg-[#020617]/60" />
-          <MainNav />
-          <div className="min-h-screen">{children}</div>
-          <Footer />
-        </StoreProvider>
+          {children}
+          <Toaster richColors />
+        </Providers>
       </body>
     </html>
   );

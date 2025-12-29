@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,20 +15,20 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
-import { useLoginMutation } from "@/lib/services/authApi";
+import { useLogin } from "@/lib/hooks/useAuth";
+import { Role } from "@/lib/types/auth";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
-  password: z.string().min(8, { message: "Password must be at least 8 characters" }),
-  userType: z.string(),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
+  userType: z.enum(["USER", "ADMIN"]),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
-  const [login, { isLoading, error }] = useLoginMutation();
-
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -39,17 +38,12 @@ export default function LoginPage() {
     },
   });
 
-  async function onSubmit(data: LoginFormValues) {
-    try {
-      // Hardcoding userType as USER as requested
-      const payload = { ...data, userType: "USER" };
-      const response = await login(payload).unwrap();
-      console.log("Login success:", response);
-      alert("Login successful!");
-    } catch (err: any) {
-      console.error("Login error:", err);
-    }
-  }
+  const loginMutation = useLogin();
+
+  const onSubmit = (data: LoginFormValues) => {
+    const payload = { ...data, userType: data.userType as Role };
+    loginMutation.mutate(payload);
+  };
 
   return (
     <AuthFormLayout
@@ -58,12 +52,6 @@ export default function LoginPage() {
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          {error && (
-            <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-xl text-xs">
-              {(error as any)?.data?.message || "Invalid email or password."}
-            </div>
-          )}
-
           <FormField
             control={form.control}
             name="email"
@@ -114,10 +102,10 @@ export default function LoginPage() {
 
           <Button
             type="submit"
-            disabled={isLoading}
+            disabled={loginMutation.isPending}
             className="w-full bg-[#D4AF37] hover:bg-[#B8962E] text-[#0F1C2E] font-bold py-6 rounded-xl transition-all shadow-[0_0_20px_rgba(212,175,55,0.2)] disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? "Signing In..." : "Sign In"}
+            {loginMutation.isPending ? "Signing In..." : "Sign In"}
           </Button>
 
           <div className="text-center text-sm text-gray-400 mt-6">
