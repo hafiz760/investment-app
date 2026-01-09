@@ -18,12 +18,12 @@ export default function HomePage() {
     <main className="text-foreground overflow-x-hidden w-full">
       <HeroSection />
       <HighlightCardsSection />
-      <ServicesSection />
+      <InvestmentPlansSection />
+      {/* <ServicesSection /> */}
       <StatsSection />
       <AboutSection />
       <CtaBannerSection />
       <TeamSection />
-      <InvestmentPlansSection />
       <TestimonialsSection />
       <BlogSection />
       <FaqSection />

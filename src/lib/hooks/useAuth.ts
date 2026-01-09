@@ -19,6 +19,8 @@ import {
   UpdatePasswordRequest,
   UpdatePasswordResponse,
   ApiError,
+  ResendOtpRequest,
+  KycResponse,
 } from "../types/auth";
 import { useAppDispatch } from "../store/hooks";
 import { setAuth, clearAuth } from "../store/slices/authSlice";
@@ -59,13 +61,34 @@ export const useVerifyOtp = (): UseMutationResult<
   return useMutation<AuthResponse, ApiError, VerifyOtpRequest>({
     mutationFn: authApi.verifyOtp,
     onSuccess: (data) => {
-      dispatch(setAuth({ user: data.user, accessToken: data.accessToken }));
-      setAuthCookie(data.accessToken);
+      dispatch(setAuth({ user: data.user, accessToken: data.access_token }));
+      setAuthCookie(data.access_token);
 
       toast.success("Email verified successfully!", {
         description: "Welcome to Plouton AI",
       });
       router.push("/");
+    },
+    onError: (error) => {
+      toast.error("Verification failed", {
+        description: error.message,
+      });
+    },
+  });
+};
+
+export const useResendOtp = (): UseMutationResult<
+  AuthResponse,
+  ApiError,
+  ResendOtpRequest
+> => {
+  return useMutation<AuthResponse, ApiError, ResendOtpRequest>({
+    mutationFn: authApi.resendOtp,
+    onSuccess: (data) => {
+      console.log(data);
+      toast.success("OTP sent successfully!", {
+        description: "Please check your email to verify your account.",
+      });
     },
     onError: (error) => {
       toast.error("Verification failed", {
@@ -86,20 +109,14 @@ export const useLogin = (): UseMutationResult<
   return useMutation<AuthResponse, ApiError, LoginRequest>({
     mutationFn: authApi.login,
     onSuccess: (data) => {
-      dispatch(setAuth({ user: data.user, accessToken: data.accessToken }));
-      setAuthCookie(data.accessToken);
+      console.log(data);
+      dispatch(setAuth({ user: data.user, accessToken: data.access_token }));
+      setAuthCookie(data.access_token);
 
       toast.success("Login successful!", {
         description: `Welcome back, ${data.user.username}`,
       });
-
-      if (typeof window !== "undefined") {
-        const searchParams = new URLSearchParams(window.location.search);
-        const redirectTo = searchParams.get("redirect");
-        router.push(redirectTo || "/");
-      } else {
-        router.push("/");
-      }
+      router.push("/user/dashboard");
     },
     onError: (error) => {
       toast.error("Login failed", {
@@ -148,7 +165,7 @@ export const useResetPassword = (): UseMutationResult<
       toast.success("Password reset successful!", {
         description: data.message,
       });
-      router.push("/sign-in");
+      // router.push("/sign-in");
     },
     onError: (error) => {
       toast.error("Password reset failed", {
@@ -197,6 +214,26 @@ export const useLogout = () => {
     await persistor.purge();
 
     toast.info("Logged out successfully");
-    router.push("/sign-in");
+    router.push("/login");
   };
+};
+
+export const useSubmitKyc = (): UseMutationResult<
+  KycResponse,
+  ApiError,
+  FormData
+> => {
+  return useMutation<KycResponse, ApiError, FormData>({
+    mutationFn: authApi.submitKyc,
+    onSuccess: (data) => {
+      toast.success("KYC submission successful!", {
+        description: data.message,
+      });
+    },
+    onError: (error) => {
+      toast.error("KYC submission failed", {
+        description: error.message,
+      });
+    },
+  });
 };

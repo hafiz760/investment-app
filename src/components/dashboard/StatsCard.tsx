@@ -5,20 +5,29 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 interface StatsCardProps {
-  label: string;
+  label?: string;
+  title?: string;
   value: string;
-  icon: React.ElementType;
+  icon: React.ReactNode;
+  trend?: {
+    value: string;
+    isPositive: boolean;
+  };
   className?: string;
   iconClassName?: string;
 }
 
 export function StatsCard({
   label,
+  title,
   value,
-  icon: Icon,
+  icon: IconOrElement,
+  trend,
   className,
   iconClassName,
 }: StatsCardProps) {
+  const displayLabel = title || label;
+
   return (
     <Card
       className={cn(
@@ -26,18 +35,42 @@ export function StatsCard({
         className
       )}
     >
-      <CardContent className="p-6 flex items-center gap-4">
-        <div
-          className={cn(
-            "p-4 rounded-xl transition-transform group-hover:scale-110",
-            iconClassName || "bg-[#D4AF37]/10 text-[#D4AF37]"
+      <CardContent className="p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div
+            className={cn(
+              "p-3 rounded-xl transition-all group-hover:scale-110",
+              iconClassName || "bg-[#D4AF37]/10 text-[#D4AF37]"
+            )}
+          >
+            {typeof IconOrElement === "function"
+              ? React.createElement(IconOrElement as React.ElementType, {
+                  className: "h-6 w-6",
+                })
+              : IconOrElement}
+          </div>
+          {trend && (
+            <div
+              className={cn(
+                "flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full",
+                trend.isPositive
+                  ? "bg-green-500/10 text-green-400"
+                  : "bg-red-500/10 text-red-400"
+              )}
+            >
+              <span className="text-[10px] tracking-wider uppercase font-bold">
+                {trend.value}
+              </span>
+            </div>
           )}
-        >
-          <Icon className="h-6 w-6" />
         </div>
         <div className="flex flex-col">
-          <p className="text-xl font-bold tracking-tight text-white">{value}</p>
-          <span className="text-sm font-medium text-gray-400">{label}</span>
+          <p className="text-2xl font-bold tracking-tight text-white">
+            {value}
+          </p>
+          <span className="text-sm font-medium text-gray-400">
+            {displayLabel}
+          </span>
         </div>
       </CardContent>
     </Card>

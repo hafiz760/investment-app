@@ -11,12 +11,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useLogout } from "@/lib/hooks/useAuth";
 
 export function DashboardNavbar() {
+  const logout = useLogout();
+
+  const handleLogout = async () => {
+    await logout();
+  };
+
   return (
     <header className="border-b border-[#D4AF37]/20 bg-[#0F1C2E]/60 backdrop-blur-xl text-white h-16 flex items-center px-4 lg:px-6 sticky top-0 z-50">
       <div className="flex items-center gap-4 w-full justify-between">
-        {/* Logo Section */}
         <Link href="/user/dashboard" className="flex items-center gap-2.5">
           <div className="flex items-center justify-center rounded-md bg-[#D4AF37] px-3 py-1.5 text-xs font-bold text-[#0F1C2E]">
             IX
@@ -25,8 +31,6 @@ export function DashboardNavbar() {
             InvestaX
           </span>
         </Link>
-
-        {/* Search Bar - Responsive */}
         <div className="hidden md:flex flex-1 max-w-md mx-8 relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
@@ -34,8 +38,6 @@ export function DashboardNavbar() {
             className="pl-10 bg-white/5 border-[#D4AF37]/20 rounded-lg h-10 w-full text-white placeholder:text-gray-400 focus:border-[#D4AF37]/50"
           />
         </div>
-
-        {/* Right Section */}
         <div className="flex items-center gap-2 lg:gap-4">
           <Button
             variant="ghost"
@@ -64,9 +66,16 @@ export function DashboardNavbar() {
               align="end"
               className="bg-[#0F1C2E] border-[#D4AF37]/20 text-white"
             >
-              <DropdownMenuItem>Profile</DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/user/profile" className="flex w-full items-center">
+                  Profile
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive">
+              <DropdownMenuItem
+                onClick={handleLogout}
+                className="text-red-400 hover:text-red-500 focus:text-red-500"
+              >
                 Logout
               </DropdownMenuItem>
             </DropdownMenuContent>

@@ -1,5 +1,3 @@
-// Auth-related TypeScript interfaces
-
 export enum Role {
   USER = "USER",
   ADMIN = "ADMIN",
@@ -16,7 +14,7 @@ export interface User {
 }
 
 export interface AuthResponse {
-  accessToken: string;
+  access_token: string;
   user: User;
 }
 
@@ -46,6 +44,11 @@ export interface VerifyOtpRequest {
   otp: string;
 }
 
+export interface ResendOtpRequest {
+  email: string;
+  type: string;
+}
+
 export interface ForgotPasswordRequest {
   email: string;
 }
@@ -69,6 +72,16 @@ export interface UpdatePasswordRequest {
 }
 
 export interface UpdatePasswordResponse {
+  message: string;
+}
+
+export interface KycRequest {
+  profilePic: File;
+  cnic_front: File;
+  cnic_back: File;
+}
+
+export interface KycResponse {
   message: string;
 }
 

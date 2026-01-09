@@ -8,25 +8,31 @@ const articles = [
     title: "Retirement Planning: Steps You Should Take Today",
     author: "zaderonstudio2",
     date: "September 21, 2025",
-    excerpt: "Top Strategies to Grow Your Wealth zaderonstudio2 – September 21,…"
+    excerpt:
+      "Top Strategies to Grow Your Wealth zaderonstudio2 – September 21,…",
   },
   {
     title: "The Power of Diversifying Your Portfolio",
     author: "zaderonstudio2",
     date: "September 21, 2025",
-    excerpt: "Top Strategies to Grow Your Wealth zaderonstudio2 – September 21,…"
+    excerpt:
+      "Top Strategies to Grow Your Wealth zaderonstudio2 – September 21,…",
   },
   {
     title: "5 Common Investment Mistakes to Avoid",
     author: "zaderonstudio2",
     date: "September 21, 2025",
-    excerpt: "Top Strategies to Grow Your Wealth zaderonstudio2 – September 21,…"
-  }
+    excerpt:
+      "Top Strategies to Grow Your Wealth zaderonstudio2 – September 21,…",
+  },
 ];
 
 export default function BlogSection() {
   return (
-    <section id="blog" className="section-padding py-20 lg:py-32 bg-gradient-to-b from-transparent to-[#0F1C2E]/50">
+    <section
+      id="blog"
+      className="section-padding py-10 lg:py-20 bg-gradient-to-b from-transparent to-[#0F1C2E]/50"
+    >
       <div className="container mx-auto">
         <div className="text-center mb-16" data-aos="fade-up">
           <SectionBadge className="mb-2">Blog Post</SectionBadge>
@@ -46,7 +52,7 @@ export default function BlogSection() {
               <div className="h-64 bg-[#D4AF37]/10 flex items-center justify-center">
                 <div className="text-6xl">📰</div>
               </div>
-              
+
               <div className="p-6">
                 <div className="flex items-center gap-4 text-sm text-white/60 mb-4">
                   <div className="flex items-center gap-2">
@@ -58,17 +64,17 @@ export default function BlogSection() {
                     <span>{article.date}</span>
                   </div>
                 </div>
-                
+
                 <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#D4AF37] transition-colors">
                   {article.title}
                 </h3>
-                
+
                 <p className="text-white/70 mb-4 line-clamp-2">
                   {article.excerpt}
                 </p>
-                
-                <a 
-                  href="#" 
+
+                <a
+                  href="#"
                   className="inline-flex items-center gap-2 text-[#D4AF37] hover:gap-3 transition-all font-semibold"
                 >
                   Learn more

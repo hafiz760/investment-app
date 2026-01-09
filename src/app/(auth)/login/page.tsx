@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { AuthFormLayout } from "@/components/layout/AuthFormLayout";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -17,6 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { useLogin } from "@/lib/hooks/useAuth";
 import { Role } from "@/lib/types/auth";
+import { PasswordInput } from "@/components/ui/password-input";
+import { LoaderButton } from "@/components/ui/loader-button";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -85,8 +86,7 @@ export default function LoginPage() {
                   </Link>
                 </div>
                 <FormControl>
-                  <Input
-                    type="password"
+                  <PasswordInput
                     placeholder="••••••••"
                     className="bg-[#050B14]/50 border-[#D4AF37]/20 text-white focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 rounded-xl"
                     {...field}
@@ -96,20 +96,17 @@ export default function LoginPage() {
               </FormItem>
             )}
           />
-
-          {/* Hidden userType field */}
           <input type="hidden" {...form.register("userType")} />
-
-          <Button
+          <LoaderButton
             type="submit"
-            disabled={loginMutation.isPending}
-            className="w-full bg-[#D4AF37] hover:bg-[#B8962E] text-[#0F1C2E] font-bold py-6 rounded-xl transition-all shadow-[0_0_20px_rgba(212,175,55,0.2)] disabled:opacity-50 disabled:cursor-not-allowed"
+            loading={loginMutation.isPending}
+            loadingText="Signing In..."
+            className="w-full bg-[#D4AF37] hover:bg-[#B8962E] text-[#0F1C2E] font-bold py-6 rounded-xl transition-all shadow-[0_0_20px_rgba(212,175,55,0.2)]"
           >
-            {loginMutation.isPending ? "Signing In..." : "Sign In"}
-          </Button>
-
+            Sign In
+          </LoaderButton>
           <div className="text-center text-sm text-gray-400 mt-6">
-            Don't have an account?{" "}
+            Don't have an account?
             <Link
               href="/signup"
               className="text-[#D4AF37] hover:underline font-medium"

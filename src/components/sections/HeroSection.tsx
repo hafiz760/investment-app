@@ -1,27 +1,29 @@
 "use client";
 
 import { TrendingUp, Shield, Users, Award } from "lucide-react";
-import { PrimaryButton, OutlineButton, SectionBadge } from "@/components/common";
+import {
+  PrimaryButton,
+  OutlineButton,
+  SectionBadge,
+} from "@/components/common";
 
 export default function HeroSection() {
   return (
-    <section
-      id="home"
-      className="section-padding py-20 lg:py-32"
-    >
+    <section id="home" className="section-padding py-10 lg:py-20">
       <div className="container mx-auto grid lg:grid-cols-2 gap-12 items-center">
         {/* Left Content */}
         <div className="space-y-8" data-aos="fade-right">
           <SectionBadge>Diversified Business Group</SectionBadge>
-          
+
           <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight text-white">
             Building Wealth Through{" "}
             <span className="text-[#D4AF37]">Diversified Investments</span>
           </h1>
-          
+
           <p className="text-lg text-white/70 max-w-xl leading-relaxed">
-            A trusted group operating across Coal, Cement, Bricks, Real Estate, Forex & IT sectors. 
-            Offering secure ROI-based investment opportunities with transparent returns.
+            A trusted group operating across Coal, Cement, Bricks, Real Estate,
+            Forex & IT sectors. Offering secure ROI-based investment
+            opportunities with transparent returns.
           </p>
 
           {/* Key Features */}

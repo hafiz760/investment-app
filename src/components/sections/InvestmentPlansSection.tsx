@@ -10,15 +10,16 @@ const plans = [
     roi: "12-15%",
     lockIn: "6 Months",
     payout: "Monthly",
-    description: "Ideal for investors looking for shorter commitment periods with regular monthly returns.",
+    description:
+      "Ideal for investors looking for shorter commitment periods with regular monthly returns.",
     features: [
       "Monthly ROI payouts",
       "6 months lock-in period",
       "12-15% annual returns",
       "Minimum ₨50,000 investment",
       "Quarterly performance reports",
-      "Early exit option (with penalty)"
-    ]
+      "Early exit option (with penalty)",
+    ],
   },
   {
     name: "Medium-Term Plan",
@@ -26,7 +27,8 @@ const plans = [
     roi: "15-18%",
     lockIn: "12 Months",
     payout: "Quarterly",
-    description: "Best value plan with balanced risk and higher returns for committed investors.",
+    description:
+      "Best value plan with balanced risk and higher returns for committed investors.",
     features: [
       "Quarterly ROI payouts",
       "12 months lock-in period",
@@ -34,9 +36,9 @@ const plans = [
       "Minimum ₨100,000 investment",
       "Monthly performance reports",
       "Priority customer support",
-      "Reinvestment bonus options"
+      "Reinvestment bonus options",
     ],
-    highlighted: true
+    highlighted: true,
   },
   {
     name: "Long-Term Plan",
@@ -44,7 +46,8 @@ const plans = [
     roi: "18-22%",
     lockIn: "24 Months",
     payout: "Half-Yearly",
-    description: "Maximum returns for long-term investors with substantial capital commitment.",
+    description:
+      "Maximum returns for long-term investors with substantial capital commitment.",
     features: [
       "Half-yearly ROI payouts",
       "24 months lock-in period",
@@ -52,25 +55,28 @@ const plans = [
       "Minimum ₨200,000 investment",
       "Dedicated account manager",
       "Premium investment opportunities",
-      "Flexible payout options"
-    ]
-  }
+      "Flexible payout options",
+    ],
+  },
 ];
 
 export default function InvestmentPlansSection() {
   return (
-    <section id="plans" className="section-padding py-20 lg:py-32">
+    <section id="plans" className="section-padding py-10 lg:py-20">
       <div className="container mx-auto">
         {/* Investment Overview */}
         <div id="investment-overview" className="mb-20">
           <div className="text-center mb-12" data-aos="fade-up">
-            <SectionBadge className="mb-2">Investment Opportunities</SectionBadge>
+            <SectionBadge className="mb-2">
+              Investment Opportunities
+            </SectionBadge>
             <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
               ROI-Based Investment Plans
             </h2>
             <p className="text-white/70 max-w-3xl mx-auto text-lg">
-              Invest in our diversified portfolio across Coal, Cement, Bricks, Real Estate, and Forex/IT sectors. 
-              Earn consistent returns with transparent operations and regular payouts.
+              Invest in our diversified portfolio across Coal, Cement, Bricks,
+              Real Estate, and Forex/IT sectors. Earn consistent returns with
+              transparent operations and regular payouts.
             </p>
           </div>
 
@@ -78,12 +84,16 @@ export default function InvestmentPlansSection() {
             <div className="bg-gradient-to-br from-[#0F1C2E] to-[#1a2942] border border-[#D4AF37]/30 rounded-xl p-6 text-center">
               <DollarSign className="w-10 h-10 text-[#D4AF37] mx-auto mb-3" />
               <h4 className="text-white font-bold mb-2">Transparent ROI</h4>
-              <p className="text-white/60 text-sm">Clear profit-sharing structure</p>
+              <p className="text-white/60 text-sm">
+                Clear profit-sharing structure
+              </p>
             </div>
             <div className="bg-gradient-to-br from-[#0F1C2E] to-[#1a2942] border border-[#D4AF37]/30 rounded-xl p-6 text-center">
               <Shield className="w-10 h-10 text-[#D4AF37] mx-auto mb-3" />
               <h4 className="text-white font-bold mb-2">Secure Investment</h4>
-              <p className="text-white/60 text-sm">Legal documentation provided</p>
+              <p className="text-white/60 text-sm">
+                Legal documentation provided
+              </p>
             </div>
             <div className="bg-gradient-to-br from-[#0F1C2E] to-[#1a2942] border border-[#D4AF37]/30 rounded-xl p-6 text-center">
               <TrendingUp className="w-10 h-10 text-[#D4AF37] mx-auto mb-3" />
@@ -113,9 +123,11 @@ export default function InvestmentPlansSection() {
             <div
               key={plan.name}
               className={`bg-gradient-to-br from-[#0F1C2E] to-[#1a2942] border ${
-                plan.highlighted ? 'border-[#D4AF37] shadow-[0_0_40px_rgba(212,175,55,0.3)]' : 'border-[#D4AF37]/30'
+                plan.highlighted
+                  ? "border-[#D4AF37] shadow-[0_0_40px_rgba(212,175,55,0.3)]"
+                  : "border-[#D4AF37]/30"
               } rounded-xl p-8 ${
-                plan.highlighted ? 'scale-105 relative' : ''
+                plan.highlighted ? "scale-105 relative" : ""
               } transition-all`}
               data-aos="fade-up"
               data-aos-delay={index * 100}
@@ -129,7 +141,7 @@ export default function InvestmentPlansSection() {
               <h3 className="text-2xl font-bold text-white mb-2">
                 {plan.name}
               </h3>
-              
+
               <div className="mb-6">
                 <div className="text-4xl font-bold text-[#D4AF37] mb-2">
                   {plan.roi}
@@ -140,38 +152,42 @@ export default function InvestmentPlansSection() {
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="bg-[#D4AF37]/10 rounded-lg p-3 text-center">
                   <p className="text-white/60 text-xs mb-1">Min. Investment</p>
-                  <p className="text-white font-bold text-sm">{plan.minInvestment}</p>
+                  <p className="text-white font-bold text-sm">
+                    {plan.minInvestment}
+                  </p>
                 </div>
                 <div className="bg-[#D4AF37]/10 rounded-lg p-3 text-center">
                   <p className="text-white/60 text-xs mb-1">Lock-in Period</p>
                   <p className="text-white font-bold text-sm">{plan.lockIn}</p>
                 </div>
               </div>
-              
-              <p className="text-white/70 mb-6 text-sm">
-                {plan.description}
-              </p>
-              
+
+              <p className="text-white/70 mb-6 text-sm">{plan.description}</p>
+
               <div className="mb-8">
                 <p className="text-white font-semibold mb-4">Plan Features:</p>
                 <ul className="space-y-3">
                   {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3 text-white/70 text-sm">
+                    <li
+                      key={feature}
+                      className="flex items-start gap-3 text-white/70 text-sm"
+                    >
                       <Check className="w-5 h-5 text-[#D4AF37] flex-shrink-0 mt-0.5" />
                       {feature}
                     </li>
                   ))}
                 </ul>
               </div>
-              
-              <PrimaryButton 
+
+              <PrimaryButton
                 className={`w-full py-6 text-base rounded-md ${
-                  !plan.highlighted && 'bg-transparent border-2 border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0F1C2E]'
+                  !plan.highlighted &&
+                  "bg-transparent border-2 border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0F1C2E]"
                 }`}
               >
                 Invest Now
               </PrimaryButton>
-              
+
               <p className="text-white/50 text-xs text-center mt-4">
                 *Terms & Conditions apply. Subject to KYC verification.
               </p>
@@ -180,13 +196,17 @@ export default function InvestmentPlansSection() {
         </div>
 
         {/* Risk Disclaimer */}
-        <div className="mt-16 bg-gradient-to-r from-[#D4AF37]/10 to-transparent border-l-4 border-[#D4AF37] p-6 rounded" data-aos="fade-up">
+        <div
+          className="mt-16 bg-gradient-to-r from-[#D4AF37]/10 to-transparent border-l-4 border-[#D4AF37] p-6 rounded"
+          data-aos="fade-up"
+        >
           <h4 className="text-white font-bold mb-2">⚠️ Risk Disclosure</h4>
           <p className="text-white/70 text-sm leading-relaxed">
-            All investments carry inherent risks. Past performance does not guarantee future returns. 
-            ROI percentages are indicative and may vary based on market conditions and project performance. 
-            Please read all terms and conditions carefully before investing. Consult with our investment 
-            advisors for personalized guidance.
+            All investments carry inherent risks. Past performance does not
+            guarantee future returns. ROI percentages are indicative and may
+            vary based on market conditions and project performance. Please read
+            all terms and conditions carefully before investing. Consult with
+            our investment advisors for personalized guidance.
           </p>
         </div>
       </div>
