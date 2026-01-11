@@ -11,11 +11,28 @@ export interface User {
   username: string;
   phone: string;
   userType: Role;
+  isVerified?: boolean;
+  profilePic?: string | null;
+  cnic_front?: string | null;
+  cnic_back?: string | null;
+  kycApproved?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface AuthResponse {
   access_token: string;
   user: User;
+}
+
+export interface GetUsersResponse {
+  message: string;
+  data: User[];
+}
+
+export interface GetUserResponse {
+  message: string;
+  data: User;
 }
 
 export interface RegisterRequest {
@@ -44,6 +61,11 @@ export interface VerifyOtpRequest {
   otp: string;
 }
 
+export interface VerifyForgotOtpResponse {
+  message: string;
+  resetToken: string;
+}
+
 export interface ResendOtpRequest {
   email: string;
   type: string;
@@ -58,7 +80,7 @@ export interface ForgotPasswordResponse {
 }
 
 export interface ResetPasswordRequest {
-  otp: string;
+  token: string;
   newPassword: string;
 }
 
@@ -89,4 +111,12 @@ export interface ApiError {
   statusCode: number;
   message: string;
   error: string;
+}
+
+export interface UpdateKycStatusRequest {
+  kycApproved: boolean;
+}
+
+export interface UpdateKycStatusResponse {
+  message: string;
 }

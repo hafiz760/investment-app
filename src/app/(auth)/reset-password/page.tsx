@@ -15,8 +15,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useResetPasswordMutation } from "@/lib/services/authApi";
+import { useResetPassword } from "@/lib/hooks/useAuth";
 import { useSearchParams, useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const resetPasswordSchema = z
   .object({
@@ -36,7 +37,7 @@ function ResetPasswordContent() {
   const router = useRouter();
   const token = searchParams.get("token") || "";
   
-  const [resetPassword, { isLoading, error, isSuccess }] = useResetPasswordMutation();
+  const resetPasswordMutation = useResetPassword();
 
   const form = useForm<ResetPasswordFormValues>({
     resolver: zodResolver(resetPasswordSchema),
@@ -48,18 +49,17 @@ function ResetPasswordContent() {
   });
 
   async function onSubmit(data: ResetPasswordFormValues) {
-    try {
-      const payload = {
-        token: data.token,
-        newPassword: data.newPassword,
-      };
-      await resetPassword(payload).unwrap();
-      setTimeout(() => {
-        router.push("/login");
-      }, 2000);
-    } catch (err: any) {
-      console.error("Reset password error:", err);
-    }
+    const payload = {
+      token: data.token,
+      newPassword: data.newPassword,
+    };
+    resetPasswordMutation.mutate(payload, {
+      onSuccess: () => {
+        setTimeout(() => {
+          router.push("/login");
+        }, 2000);
+      }
+    });
   }
 
   return (
@@ -68,7 +68,7 @@ function ResetPasswordContent() {
       subtitle="Enter your new password below"
     >
       <div className="space-y-6">
-        {isSuccess ? (
+        {resetPasswordMutation.isSuccess ? (
           <div className="text-center space-y-4">
             <div className="bg-green-500/10 border border-green-500/20 text-green-400 p-4 rounded-xl text-sm">
               Password reset successfully! Redirecting to login...
@@ -77,9 +77,9 @@ function ResetPasswordContent() {
         ) : (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              {error && (
+              {resetPasswordMutation.error && (
                 <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-xl text-xs">
-                  {(error as any)?.data?.message || "An error occurred. Please try again."}
+                  {resetPasswordMutation.error.message || "An error occurred. Please try again."}
                 </div>
               )}
 
@@ -125,10 +125,10 @@ function ResetPasswordContent() {
 
               <Button
                 type="submit"
-                disabled={isLoading}
+                disabled={resetPasswordMutation.isPending}
                 className="w-full bg-[#D4AF37] hover:bg-[#B8962E] text-[#0F1C2E] font-bold py-6 rounded-xl transition-all shadow-[0_0_20px_rgba(212,175,55,0.2)] disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLoading ? "Resetting Password..." : "Reset Password"}
+                {resetPasswordMutation.isPending ? "Resetting Password..." : "Reset Password"}
               </Button>
             </form>
           </Form>

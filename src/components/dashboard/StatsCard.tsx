@@ -4,19 +4,6 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-interface StatsCardProps {
-  label?: string;
-  title?: string;
-  value: string;
-  icon: React.ReactNode;
-  trend?: {
-    value: string;
-    isPositive: boolean;
-  };
-  className?: string;
-  iconClassName?: string;
-}
-
 export function StatsCard({
   label,
   title,
@@ -25,8 +12,30 @@ export function StatsCard({
   trend,
   className,
   iconClassName,
-}: StatsCardProps) {
+}: {
+  label?: string;
+  title?: string;
+  value: string;
+  icon: React.ElementType | React.ReactNode;
+  trend?: {
+    value: string;
+    isPositive: boolean;
+  };
+  className?: string;
+  iconClassName?: string;
+}) {
   const displayLabel = title || label;
+
+  const renderIcon = () => {
+    if (!IconOrElement) return null;
+
+    if (React.isValidElement(IconOrElement)) {
+      return IconOrElement;
+    }
+
+    const Icon = IconOrElement as React.ElementType;
+    return <Icon className="h-6 w-6" />;
+  };
 
   return (
     <Card
@@ -43,11 +52,7 @@ export function StatsCard({
               iconClassName || "bg-[#D4AF37]/10 text-[#D4AF37]"
             )}
           >
-            {typeof IconOrElement === "function"
-              ? React.createElement(IconOrElement as React.ElementType, {
-                  className: "h-6 w-6",
-                })
-              : IconOrElement}
+            {renderIcon()}
           </div>
           {trend && (
             <div

@@ -30,9 +30,7 @@ export type RegisterFormData = z.infer<typeof registerSchema>;
 export const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(1, "Password is required"),
-  role: z.nativeEnum(Role, {
-    required_error: "Please select a role",
-  }),
+  role: z.nativeEnum(Role),
 });
 
 export type LoginFormData = z.infer<typeof loginSchema>;

@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useVerifyForgotPasswordOtpMutation, useResendOtpMutation } from "@/lib/services/authApi";
+import { useVerifyForgotOtp, useResendOtp } from "@/lib/hooks/useAuth";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -33,8 +33,8 @@ function VerifyForgotOtpContent() {
   const router = useRouter();
   const emailParam = searchParams.get("email") || "";
   
-  const [verifyOtp, { isLoading, error, isSuccess }] = useVerifyForgotPasswordOtpMutation();
-  const [resendOtp, { isLoading: isResending }] = useResendOtpMutation();
+  const verifyForgotOtpMutation = useVerifyForgotOtp();
+  const resendOtpMutation = useResendOtp();
   const [timer, setTimer] = useState(0);
 
   useEffect(() => {
@@ -56,29 +56,23 @@ function VerifyForgotOtpContent() {
   });
 
   async function onSubmit(data: VerifyForgotOtpFormValues) {
-    try {
-      const response = await verifyOtp(data).unwrap();
-      // Logic for successful verification
-      // Capture resetToken and redirect to reset-password page
-      const resetToken = response.resetToken;
-      setTimeout(() => {
-        router.push(`/reset-password?token=${encodeURIComponent(resetToken)}&email=${encodeURIComponent(data.email)}`);
-      }, 2000);
-    } catch (err: any) {
-      console.error("Verification error:", err);
-    }
+    verifyForgotOtpMutation.mutate(data, {
+      onSuccess: (response) => {
+        const resetToken = response.resetToken;
+        setTimeout(() => {
+          router.push(`/reset-password?token=${encodeURIComponent(resetToken)}&email=${encodeURIComponent(data.email)}`);
+        }, 2000);
+      }
+    });
   }
 
   const handleResend = async () => {
-    if (timer > 0 || isResending) return;
-    try {
-      await resendOtp({ email: emailParam, type: "FORGOT_PASSWORD" }).unwrap();
-      setTimer(60);
-      alert("Verification code resent successfully!");
-    } catch (err: any) {
-      console.error("Resend error:", err);
-      alert(err?.data?.message || "Failed to resend OTP. Please try again.");
-    }
+    if (timer > 0 || resendOtpMutation.isPending) return;
+    resendOtpMutation.mutate({ email: emailParam, type: "FORGOT_PASSWORD" }, {
+      onSuccess: () => {
+        setTimer(60);
+      }
+    });
   };
 
   return (
@@ -87,7 +81,7 @@ function VerifyForgotOtpContent() {
       subtitle="Enter the 6-digit code sent to your email"
     >
       <div className="space-y-6">
-        {isSuccess ? (
+        {verifyForgotOtpMutation.isSuccess ? (
           <div className="text-center space-y-4">
             <div className="bg-green-500/10 border border-green-500/20 text-green-400 p-4 rounded-xl text-sm">
               OTP verified successfully! 
@@ -97,9 +91,9 @@ function VerifyForgotOtpContent() {
         ) : (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              {error && (
+              {verifyForgotOtpMutation.error && (
                 <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-xl text-xs">
-                  {(error as any)?.data?.message || "Invalid OTP. Please try again."}
+                  {verifyForgotOtpMutation.error.message || "Invalid OTP. Please try again."}
                 </div>
               )}
 
@@ -143,17 +137,17 @@ function VerifyForgotOtpContent() {
               <div className="space-y-3">
                 <Button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={verifyForgotOtpMutation.isPending}
                   className="w-full bg-[#D4AF37] hover:bg-[#B8962E] text-[#0F1C2E] font-bold py-6 rounded-xl transition-all shadow-[0_0_20px_rgba(212,175,55,0.2)] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isLoading ? "Verifying..." : "Verify OTP"}
+                  {verifyForgotOtpMutation.isPending ? "Verifying..." : "Verify OTP"}
                 </Button>
 
                 <div className="text-center">
                   <button
                     type="button"
                     onClick={handleResend}
-                    disabled={timer > 0 || isResending}
+                    disabled={timer > 0 || resendOtpMutation.isPending}
                     className="text-sm text-[#D4AF37] hover:text-[#B8962E] disabled:text-gray-500 disabled:cursor-not-allowed font-medium transition-colors"
                   >
                     {timer > 0 ? `Resend code in ${timer}s` : "Didn't receive code? Resend"}

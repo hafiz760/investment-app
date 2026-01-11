@@ -6,6 +6,7 @@ import {
   LoginRequest,
   AuthResponse,
   VerifyOtpRequest,
+  VerifyForgotOtpResponse,
   ForgotPasswordRequest,
   ForgotPasswordResponse,
   ResetPasswordRequest,
@@ -14,6 +15,10 @@ import {
   UpdatePasswordResponse,
   ResendOtpRequest,
   KycResponse,
+  GetUsersResponse,
+  GetUserResponse,
+  UpdateKycStatusRequest,
+  UpdateKycStatusResponse,
 } from "../types/auth";
 import axios from "axios";
 
@@ -29,6 +34,15 @@ export const authApi = {
   verifyOtp: async (data: VerifyOtpRequest): Promise<AuthResponse> => {
     const response = await apiClient.post<AuthResponse>(
       "/auth/verify-otp",
+      data
+    );
+    return response.data;
+  },
+  verifyForgotOtp: async (
+    data: VerifyOtpRequest
+  ): Promise<VerifyForgotOtpResponse> => {
+    const response = await apiClient.post<VerifyForgotOtpResponse>(
+      "/auth/verify-forgot-password-otp",
       data
     );
     return response.data;
@@ -86,6 +100,26 @@ export const authApi = {
           "Content-Type": "multipart/form-data",
         },
       }
+    );
+    return response.data;
+  },
+  getUsers: async (page = 1, limit = 20): Promise<GetUsersResponse> => {
+    const response = await apiClient.get<GetUsersResponse>("/auth/users", {
+      params: { page, limit },
+    });
+    return response.data;
+  },
+  getUserById: async (id: string): Promise<GetUserResponse> => {
+    const response = await apiClient.get<GetUserResponse>(`/auth/users/${id}`);
+    return response.data;
+  },
+  updateKycStatus: async (
+    id: string,
+    data: UpdateKycStatusRequest
+  ): Promise<UpdateKycStatusResponse> => {
+    const response = await apiClient.patch<UpdateKycStatusResponse>(
+      `/auth/users/${id}/kyc-status`,
+      data
     );
     return response.data;
   },

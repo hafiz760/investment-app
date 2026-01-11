@@ -1,5 +1,6 @@
 import {
   useMutation,
+  useQuery,
   UseMutationResult,
   useQueryClient,
 } from "@tanstack/react-query";
@@ -12,6 +13,7 @@ import {
   LoginRequest,
   AuthResponse,
   VerifyOtpRequest,
+  VerifyForgotOtpResponse,
   ForgotPasswordRequest,
   ForgotPasswordResponse,
   ResetPasswordRequest,
@@ -21,6 +23,10 @@ import {
   ApiError,
   ResendOtpRequest,
   KycResponse,
+  GetUsersResponse,
+  GetUserResponse,
+  UpdateKycStatusRequest,
+  UpdateKycStatusResponse,
 } from "../types/auth";
 import { useAppDispatch } from "../store/hooks";
 import { setAuth, clearAuth } from "../store/slices/authSlice";
@@ -116,7 +122,12 @@ export const useLogin = (): UseMutationResult<
       toast.success("Login successful!", {
         description: `Welcome back, ${data.user.username}`,
       });
-      router.push("/user/dashboard");
+
+      if (data.user.userType === "ADMIN") {
+        router.push("/admin");
+      } else {
+        router.push("/user/dashboard");
+      }
     },
     onError: (error) => {
       toast.error("Login failed", {
@@ -144,8 +155,23 @@ export const useForgotPassword = (): UseMutationResult<
         `/reset-password?email=${encodeURIComponent(variables.email)}`
       );
     },
+  });
+};
+
+export const useVerifyForgotOtp = (): UseMutationResult<
+  VerifyForgotOtpResponse,
+  ApiError,
+  VerifyOtpRequest
+> => {
+  return useMutation<VerifyForgotOtpResponse, ApiError, VerifyOtpRequest>({
+    mutationFn: authApi.verifyForgotOtp,
+    onSuccess: (data) => {
+      toast.success("OTP verified successfully!", {
+        description: data.message,
+      });
+    },
     onError: (error) => {
-      toast.error("Request failed", {
+      toast.error("Verification failed", {
         description: error.message,
       });
     },
@@ -232,6 +258,42 @@ export const useSubmitKyc = (): UseMutationResult<
     },
     onError: (error) => {
       toast.error("KYC submission failed", {
+        description: error.message,
+      });
+    },
+  });
+};
+
+export const useUsers = (page = 1, limit = 20) => {
+  return useQuery<GetUsersResponse, ApiError>({
+    queryKey: ["users", page, limit],
+    queryFn: () => authApi.getUsers(page, limit),
+  });
+};
+
+export const useUser = (id: string) => {
+  return useQuery<GetUserResponse, ApiError>({
+    queryKey: ["user", id],
+    queryFn: () => authApi.getUserById(id),
+    enabled: !!id,
+  });
+};
+
+export const useUpdateKycStatus = () => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    UpdateKycStatusResponse,
+    ApiError,
+    { id: string; data: UpdateKycStatusRequest }
+  >({
+    mutationFn: ({ id, data }) => authApi.updateKycStatus(id, data),
+    onSuccess: (data) => {
+      toast.success(data.message);
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+    },
+    onError: (error) => {
+      toast.error("Failed to update KYC status", {
         description: error.message,
       });
     },

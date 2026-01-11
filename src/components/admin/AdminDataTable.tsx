@@ -36,6 +36,8 @@ interface AdminDataTableProps<TData, TValue> {
   data: TData[];
   searchPlaceholder?: string;
   searchColumn?: string;
+  onRowClick?: (row: TData) => void;
+  isLoading?: boolean;
 }
 
 export function AdminDataTable<TData, TValue>({
@@ -43,6 +45,7 @@ export function AdminDataTable<TData, TValue>({
   data,
   searchPlaceholder = "Search...",
   searchColumn,
+  onRowClick,
 }: AdminDataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
@@ -108,7 +111,11 @@ export function AdminDataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className="border-b border-white/5 hover:bg-white/5 transition-colors"
+                  className={cn(
+                    "border-b border-white/5 hover:bg-white/5 transition-colors",
+                    onRowClick && "cursor-pointer"
+                  )}
+                  onClick={() => onRowClick?.(row.original)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="text-gray-300 py-4">

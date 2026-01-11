@@ -18,6 +18,13 @@ import { useLogin } from "@/lib/hooks/useAuth";
 import { Role } from "@/lib/types/auth";
 import { PasswordInput } from "@/components/ui/password-input";
 import { LoaderButton } from "@/components/ui/loader-button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -55,6 +62,31 @@ export default function LoginPage() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
             control={form.control}
+            name="userType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-gray-300">Login As</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger className="bg-[#050B14]/50 border-[#D4AF37]/20 text-white focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 rounded-xl h-12">
+                      <SelectValue placeholder="Select login role" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent className="bg-[#0F1C2E] border-[#D4AF37]/20 text-white">
+                    <SelectItem value="USER">User / Investor</SelectItem>
+                    <SelectItem value="ADMIN">Administrator</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage className="text-red-400" />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem>
@@ -62,7 +94,7 @@ export default function LoginPage() {
                 <FormControl>
                   <Input
                     placeholder="name@example.com"
-                    className="bg-[#050B14]/50 border-[#D4AF37]/20 text-white focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 rounded-xl"
+                    className="bg-[#050B14]/50 border-[#D4AF37]/20 text-white focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 rounded-xl h-12"
                     {...field}
                   />
                 </FormControl>
@@ -88,7 +120,7 @@ export default function LoginPage() {
                 <FormControl>
                   <PasswordInput
                     placeholder="••••••••"
-                    className="bg-[#050B14]/50 border-[#D4AF37]/20 text-white focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 rounded-xl"
+                    className="bg-[#050B14]/50 border-[#D4AF37]/20 text-white focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 rounded-xl h-12"
                     {...field}
                   />
                 </FormControl>
@@ -96,7 +128,6 @@ export default function LoginPage() {
               </FormItem>
             )}
           />
-          <input type="hidden" {...form.register("userType")} />
           <LoaderButton
             type="submit"
             loading={loginMutation.isPending}
