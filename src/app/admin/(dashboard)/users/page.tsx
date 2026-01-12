@@ -12,10 +12,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { UserDetailsModal } from "@/components/admin/UserDetailsModal";
-
 import { useUsers } from "@/lib/hooks/useAuth";
 import { User } from "@/lib/types/auth";
+import { useRouter } from "next/navigation";
 
 const columns: ColumnDef<User>[] = [
   {
@@ -109,14 +108,10 @@ export default function AdminUsersPage() {
   const { data: response, isLoading } = useUsers();
   const users = response?.data || [];
 
-  const [selectedUserId, setSelectedUserId] = React.useState<string | null>(
-    null
-  );
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const router = useRouter();
 
   const handleRowClick = (user: User) => {
-    setSelectedUserId(user.id);
-    setIsModalOpen(true);
+    router.push(`/admin/users/${user.id}`);
   };
 
   return (
@@ -142,12 +137,6 @@ export default function AdminUsersPage() {
         isLoading={isLoading}
         onRowClick={handleRowClick}
         searchPlaceholder="Search users by name or email..."
-      />
-
-      <UserDetailsModal
-        userId={selectedUserId}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
       />
     </div>
   );
