@@ -39,7 +39,6 @@ export const useRegister = (): UseMutationResult<
   RegisterRequest
 > => {
   const router = useRouter();
-
   return useMutation<RegisterResponse, ApiError, RegisterRequest>({
     mutationFn: authApi.register,
     onSuccess: (data) => {

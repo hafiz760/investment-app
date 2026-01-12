@@ -4,6 +4,21 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
+import { LucideIcon } from "lucide-react";
+
+interface StatsCardProps {
+  label?: string;
+  title?: string;
+  value: string;
+  icon: LucideIcon | React.ReactNode;
+  trend?: {
+    value: string;
+    isPositive: boolean;
+  };
+  className?: string;
+  iconClassName?: string;
+}
+
 export function StatsCard({
   label,
   title,
@@ -52,7 +67,14 @@ export function StatsCard({
               iconClassName || "bg-[#D4AF37]/10 text-[#D4AF37]"
             )}
           >
-            {renderIcon()}
+            {typeof IconOrElement === "function" ||
+            (typeof IconOrElement === "object" &&
+              IconOrElement !== null &&
+              "render" in IconOrElement)
+              ? React.createElement(IconOrElement as React.ElementType, {
+                  className: "h-6 w-6",
+                })
+              : IconOrElement}
           </div>
           {trend && (
             <div

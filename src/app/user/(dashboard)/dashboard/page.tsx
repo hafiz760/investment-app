@@ -26,49 +26,49 @@ const stats = [
     label: "Balance",
     value: "$500.6",
     icon: Wallet,
-    iconClass: "bg-blue-50 text-blue-600",
+    iconClassName: "bg-blue-50 text-blue-600",
   },
   {
     label: "Profit Balance",
     value: "$74.71",
     icon: TrendingUp,
-    iconClass: "bg-green-50 text-green-600",
+    iconClassName: "bg-green-50 text-green-600",
   },
   {
     label: "Total Profit",
     value: "$15,240",
     icon: BadgeDollarSign,
-    iconClass: "bg-indigo-50 text-indigo-600",
+    iconClassName: "bg-indigo-50 text-indigo-600",
   },
   {
     label: "Total Invest",
     value: "$136,300",
     icon: PieChart,
-    iconClass: "bg-purple-50 text-purple-600",
+    iconClassName: "bg-purple-50 text-purple-600",
   },
   {
     label: "Current Badge",
     value: "Hyip Victor",
     icon: Medal,
-    iconClass: "bg-yellow-50 text-yellow-600",
+    iconClassName: "bg-yellow-50 text-yellow-600",
   },
   {
     label: "Total Deposit",
     value: "$11,978.47",
     icon: ArrowDownToLine,
-    iconClass: "bg-teal-50 text-teal-600",
+    iconClassName: "bg-teal-50 text-teal-600",
   },
   {
     label: "Total Payout",
     value: "$57.3",
     icon: ArrowUpFromLine,
-    iconClass: "bg-orange-50 text-orange-600",
+    iconClassName: "bg-orange-50 text-orange-600",
   },
   {
     label: "Total Ticket",
     value: "3",
     icon: Ticket,
-    iconClass: "bg-rose-50 text-rose-600",
+    iconClassName: "bg-rose-50 text-rose-600",
   },
 ];
 
@@ -77,25 +77,25 @@ const recentActivity = [
     label: "Support",
     value: "0",
     icon: Headphones,
-    iconClass: "bg-gray-50 text-gray-600",
+    iconClassName: "bg-gray-50 text-gray-600",
   },
   {
     label: "Withdraw",
     value: "$0",
     icon: ArrowUpFromLine,
-    iconClass: "bg-gray-50 text-gray-600",
+    iconClassName: "bg-gray-50 text-gray-600",
   },
   {
     label: "Invest",
     value: "$500",
     icon: Calculator,
-    iconClass: "bg-gray-50 text-gray-600",
+    iconClassName: "bg-gray-50 text-gray-600",
   },
   {
     label: "Deposit",
     value: "$1,000",
     icon: Plus,
-    iconClass: "bg-gray-50 text-gray-600",
+    iconClassName: "bg-gray-50 text-gray-600",
   },
 ];
 
@@ -138,11 +138,7 @@ export default function DashboardPage() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat) => (
-          <StatsCard
-            key={stat.label}
-            {...stat}
-            iconClassName={stat.iconClass}
-          />
+          <StatsCard key={stat.label} {...stat} />
         ))}
       </div>
 
@@ -163,7 +159,7 @@ export default function DashboardPage() {
             >
               <div
                 className={cn(
-                  activity.iconClass,
+                  activity.iconClassName,
                   "p-3 rounded-lg bg-opacity-10"
                 )}
               >
