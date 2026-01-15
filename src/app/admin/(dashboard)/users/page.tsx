@@ -16,12 +16,14 @@ import { useUsers } from "@/lib/hooks/useAuth";
 import { User } from "@/lib/types/auth";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/lib/store/hooks";
+import { UserDialog } from "@/components/admin/UserDialog";
 
 export default function AdminUsersPage() {
   const { data: response, isLoading } = useUsers();
   const users = response?.data || [];
   const { user } = useAppSelector((state) => state.auth);
   const router = useRouter();
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
   const hasPermission = (action: "write" | "update" | "delete") => {
     if (user?.roleName === "Super Admin") return true;
@@ -162,7 +164,10 @@ export default function AdminUsersPage() {
           </p>
         </div>
         {hasPermission("write") && (
-          <Button className="bg-[#D4AF37] hover:bg-[#B8962E] text-[#0F1C2E] font-bold rounded-xl h-11 px-6 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
+          <Button 
+            onClick={() => setIsDialogOpen(true)}
+            className="bg-[#D4AF37] hover:bg-[#B8962E] text-[#0F1C2E] font-bold rounded-xl h-11 px-6 shadow-[0_0_20px_rgba(212,175,55,0.2)]"
+          >
             <Plus className="h-5 w-5 mr-2" />
             Add New User
           </Button>
@@ -175,6 +180,11 @@ export default function AdminUsersPage() {
         isLoading={isLoading}
         onRowClick={handleRowClick}
         searchPlaceholder="Search users by name or email..."
+      />
+
+      <UserDialog 
+        open={isDialogOpen} 
+        onOpenChange={setIsDialogOpen} 
       />
     </div>
   );

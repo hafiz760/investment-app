@@ -34,6 +34,26 @@ import { setAuth, clearAuth } from "../store/slices/authSlice";
 import { setAuthCookie, clearAuthCookie } from "../utils/cookies";
 import { persistor } from "../store";
 
+export const useAdminCreateUser = (): UseMutationResult<
+  RegisterResponse,
+  ApiError,
+  RegisterRequest
+> => {
+  const queryClient = useQueryClient();
+  return useMutation<RegisterResponse, ApiError, RegisterRequest>({
+    mutationFn: authApi.register,
+    onSuccess: () => {
+      toast.success("User created successfully!");
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+    onError: (error) => {
+      toast.error("Failed to create user", {
+        description: error.message,
+      });
+    },
+  });
+};
+
 export const useRegister = (): UseMutationResult<
   RegisterResponse,
   ApiError,

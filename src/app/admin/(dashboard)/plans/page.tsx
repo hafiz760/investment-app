@@ -27,7 +27,7 @@ export default function AdminPlansPage() {
 
   const hasPermission = (action: "write" | "update" | "delete") => {
     if (user?.roleName === "Super Admin") return true;
-    const permission = user?.permissions?.find(p => p.moduleName === "Investment");
+    const permission = user?.permissions?.find(p => p.moduleName === "Plan");
     return permission ? permission[action] : false;
   };
 
@@ -173,7 +173,7 @@ export default function AdminPlansPage() {
     },
   ];
 
-  if (!user?.permissions?.find(p => p.moduleName === "Investment")?.read && user?.roleName !== "Super Admin") {
+  if (!user?.permissions?.find(p => p.moduleName === "Plan")?.read && user?.roleName !== "Super Admin") {
     return (
       <div className="h-[60vh] flex flex-col items-center justify-center gap-4 text-center">
         <ShieldAlert className="h-16 w-16 text-red-500/50" />

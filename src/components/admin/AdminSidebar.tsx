@@ -43,9 +43,9 @@ export function AdminSidebar({
   const filteredLinks = [
     { label: "Dashboard", href: "/admin", icon: LayoutDashboard, show: true },
     { label: "Users", href: "/admin/users", icon: Users, show: hasPermission("User", "read") },
-    { label: "Investment Plans", href: "/admin/plans", icon: TrendingUp, show: hasPermission("Investment", "read") },
+    { label: "Investment Plans", href: "/admin/plans", icon: TrendingUp, show: hasPermission("Plan", "read") },
     { label: "Payment History", href: "/admin/payments", icon: History, show: hasPermission("Payment", "read") },
-    { label: "Settings", href: "/admin/settings", icon: Settings, show: hasPermission("Setting", "read") },
+    { label: "Settings", href: "/admin/settings", icon: Settings, show: true },
   ].filter(link => link.show);
 
   return (

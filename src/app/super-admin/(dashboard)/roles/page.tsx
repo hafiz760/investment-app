@@ -51,7 +51,7 @@ export default function RolesPage() {
       header: "Permissions Detail",
       cell: ({ row }) => (
         <div className="flex flex-wrap gap-x-3 gap-y-2">
-          {["User", "Role", "Investment", "Payment", "Setting"].map((module) => {
+          {["User", "Role", "Plan"].map((module) => {
             const p = row.original.permissions.find(perm => perm.moduleName === module);
             if (!p) return null;
             return (

@@ -27,7 +27,7 @@ interface RoleFormValues {
   }[];
 }
 
-const DEFAULT_MODULES = ["User", "Role", "Investment", "Payment", "Setting"];
+const DEFAULT_MODULES = ["User", "Role", "Plan"];
 
 export function RoleDialog({
   open,
@@ -64,7 +64,7 @@ export function RoleDialog({
       reset({
         name: role.name,
         permissions: DEFAULT_MODULES.map((m) => {
-          const existing = role.permissions.find((p) => p.moduleName === m);
+          const existing = role.permissions.find((p) => p.moduleName === m || (m === "Plan" && p.moduleName === "Investment"));
           return existing
             ? {
                 moduleName: m,
