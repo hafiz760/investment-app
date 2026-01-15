@@ -19,6 +19,9 @@ import {
   GetUserResponse,
   UpdateKycStatusRequest,
   UpdateKycStatusResponse,
+  ApiRole,
+  InvestmentPlan,
+  CreatePlanRequest,
 } from "../types/auth";
 import axios from "axios";
 
@@ -122,5 +125,46 @@ export const authApi = {
       data
     );
     return response.data;
+  },
+  getRoles: async (): Promise<ApiRole[]> => {
+    const response = await apiClient.get<ApiRole[]>("/roles");
+    return response.data;
+  },
+  createRole: async (payload: {
+    name: string;
+    permissions: any[];
+  }): Promise<ApiRole> => {
+    const response = await apiClient.post<ApiRole>("/roles", payload);
+    return response.data;
+  },
+  updateRole: async (
+    id: string,
+    payload: { name: string; permissions: any[] }
+  ): Promise<ApiRole> => {
+    const response = await apiClient.patch<ApiRole>(`/roles/${id}`, payload);
+    return response.data;
+  },
+  deleteRole: async (id: string): Promise<void> => {
+    await apiClient.delete(`/roles/${id}`);
+  },
+
+  // Plans API
+  getPlans: async (): Promise<InvestmentPlan[]> => {
+    const response = await apiClient.get<InvestmentPlan[]>("/plans");
+    return response.data;
+  },
+  createPlan: async (data: CreatePlanRequest): Promise<InvestmentPlan> => {
+    const response = await apiClient.post<InvestmentPlan>("/plans", data);
+    return response.data;
+  },
+  updatePlan: async (
+    id: string,
+    data: Partial<CreatePlanRequest>
+  ): Promise<InvestmentPlan> => {
+    const response = await apiClient.patch<InvestmentPlan>(`/plans/${id}`, data);
+    return response.data;
+  },
+  deletePlan: async (id: string): Promise<void> => {
+    await apiClient.delete(`/plans/${id}`);
   },
 };

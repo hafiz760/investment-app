@@ -1,16 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "../../types/auth";
+import { User, Permission } from "../../types/auth";
 
 interface AuthState {
   user: User | null;
   accessToken: string | null;
   isAuthenticated: boolean;
+  permissions: Permission[];
 }
 
 const initialState: AuthState = {
   user: null,
   accessToken: null,
   isAuthenticated: false,
+  permissions: [],
 };
 
 const authSlice = createSlice({
@@ -24,11 +26,13 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.accessToken = action.payload.accessToken;
       state.isAuthenticated = true;
+      state.permissions = action.payload.user.permissions || [];
     },
     clearAuth: (state) => {
       state.user = null;
       state.accessToken = null;
       state.isAuthenticated = false;
+      state.permissions = [];
     },
     updateUser: (state, action: PayloadAction<Partial<User>>) => {
       if (state.user) {

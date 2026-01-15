@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Zap, Building2, Boxes, Home, Laptop } from "lucide-react";
+import { ArrowRight, Zap, Building2, Boxes, Home, Laptop, BookOpen } from "lucide-react";
 import { PrimaryButton, SectionBadge } from "@/components/common";
 
 const divisions = [
@@ -9,35 +9,42 @@ const divisions = [
     title: "Coal Dealership",
     description:
       "Premium quality coal supply for industrial and commercial needs with reliable logistics.",
-    href: "#coal",
+    href: "/services#coal",
   },
   {
     icon: Building2,
     title: "Cement Dealership",
     description:
       "Bulk and retail cement supply from trusted brands with competitive pricing.",
-    href: "#cement",
+    href: "/services#cement",
   },
   {
     icon: Boxes,
     title: "Bricks Supply",
     description:
       "High-quality bricks including fly ash, red bricks, and cement blocks for construction.",
-    href: "#bricks",
+    href: "/services#bricks",
   },
   {
     icon: Home,
     title: "Property Dealing",
     description:
       "Complete real estate solutions for buying, selling, and rental properties.",
-    href: "#property",
+    href: "/services#property",
   },
   {
     icon: Laptop,
     title: "IT Services",
     description:
       "Technology solutions and forex trading services with expert guidance.",
-    href: "#it",
+    href: "/services#forex-it",
+  },
+  {
+    icon: BookOpen,
+    title: "IT Courses",
+    description:
+      "Professional IT training and certification programs to boost your career prospects.",
+    href: "/services#it-courses",
   },
 ];
 

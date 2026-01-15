@@ -25,21 +25,47 @@ export function AuthGuard({ children, requiredRole }: AuthGuardProps) {
     }
 
     // Role-based access control
-    if (requiredRole && user?.userType !== requiredRole) {
-      if (user?.userType === Role.ADMIN) {
-        router.push("/admin");
-      } else if (user?.userType === Role.USER) {
-        router.push("/user/dashboard");
-      } else {
-        router.push("/");
+    if (requiredRole) {
+      const isSuperAdmin = user?.roleName === "Super Admin";
+      const isAdmin = user?.roleName === "Admin";
+      const isUser = user?.roleName === "User";
+
+      if (requiredRole === Role.ADMIN && !isAdmin && !isSuperAdmin) {
+        if (isUser) {
+          router.push("/user/dashboard");
+        } else {
+          router.push("/");
+        }
+        return;
       }
-      return;
+
+      if (requiredRole === Role.SUPER_ADMIN && !isSuperAdmin) {
+        if (isAdmin) {
+          router.push("/admin");
+        } else if (isUser) {
+          router.push("/user/dashboard");
+        } else {
+          router.push("/");
+        }
+        return;
+      }
+
+      if (requiredRole === Role.USER && !isUser) {
+        if (isSuperAdmin) {
+          router.push("/super-admin");
+        } else if (isAdmin) {
+          router.push("/admin");
+        } else {
+          router.push("/");
+        }
+        return;
+      }
     }
 
     setIsAuthorized(true);
   }, [isAuthenticated, user, requiredRole, router]);
 
-  if (!isAuthenticated || (requiredRole && user?.userType !== requiredRole) || !isAuthorized) {
+  if (!isAuthenticated || !isAuthorized) {
     return (
       <div className="min-h-screen bg-[#020617] flex flex-col items-center justify-center gap-4 text-[#D4AF37]">
         <Loader2 className="h-10 w-10 animate-spin" />

@@ -62,10 +62,10 @@ const plans = [
 
 export default function InvestmentPlansSection() {
   return (
-    <section id="plans" className="section-padding py-10 lg:py-20">
+    <section id="plans" className="section-padding py-10 lg:py-20 scroll-mt-24">
       <div className="container mx-auto">
         {/* Investment Overview */}
-        <div id="investment-overview" className="mb-20">
+        <div id="investment-overview" className="mb-20 scroll-mt-24">
           <div className="text-center mb-12" data-aos="fade-up">
             <SectionBadge className="mb-2">
               Investment Opportunities

@@ -14,8 +14,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRegister } from "@/lib/hooks/useAuth";
+import { useRegister, useRoles } from "@/lib/hooks/useAuth";
 import { LoaderButton } from "@/components/ui/loader-button";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Role } from "@/lib/types/auth";
 import { PasswordInput } from "@/components/ui/password-input";
@@ -53,12 +54,25 @@ export default function SignupPage() {
   });
 
   const registerMutation = useRegister();
+  const { data: roles } = useRoles();
 
   async function onSubmit(data: SignupFormValues) {
+    const userRole = roles?.find((role) => role.name === "User");
+
+    if (!userRole) {
+      toast.error("User role not found. Please try again later.");
+      return;
+    }
+
     try {
-      const payload = { ...data, userType: "USER" as Role };
+      // Create payload without userType and with roleId
+      const { userType, ...formData } = data;
+      const payload = {
+        ...formData,
+        roleId: userRole.id,
+      };
+
       registerMutation.mutate(payload);
-      router.push(`/verify-otp?email=${encodeURIComponent(data.email)}`);
     } catch (err: any) {
       console.error("Signup error:", err);
     }

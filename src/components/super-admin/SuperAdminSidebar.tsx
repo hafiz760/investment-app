@@ -11,20 +11,23 @@ import {
   ChevronLeft,
   X,
   Menu,
+  Shield,
   TrendingUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/lib/store/hooks";
 
-const adminLinks = [
-  { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { label: "Users", href: "/admin/users", icon: Users },
-  { label: "Payment History", href: "/admin/payments", icon: History },
-  { label: "Settings", href: "/admin/settings", icon: Settings },
+const superAdminLinks = [
+  { label: "Dashboard", href: "/super-admin", icon: LayoutDashboard },
+  { label: "Users", href: "/super-admin/users", icon: Users },
+  { label: "Roles", href: "/super-admin/roles", icon: Shield },
+  { label: "Investment Plans", href: "/super-admin/plans", icon: TrendingUp },
+  { label: "Payment History", href: "/super-admin/payments", icon: History },
+  { label: "Settings", href: "/super-admin/settings", icon: Settings },
 ];
 
-export function AdminSidebar({
+export function SuperAdminSidebar({
   open,
   setOpen,
 }: {
@@ -33,20 +36,6 @@ export function AdminSidebar({
 }) {
   const pathname = usePathname();
   const { user } = useAppSelector((state) => state.auth);
-
-  const hasPermission = (moduleName: string, action: "read" | "write" | "update" | "delete") => {
-    if (user?.roleName === "Super Admin") return true;
-    const permission = user?.permissions?.find(p => p.moduleName === moduleName);
-    return permission ? permission[action] : false;
-  };
-
-  const filteredLinks = [
-    { label: "Dashboard", href: "/admin", icon: LayoutDashboard, show: true },
-    { label: "Users", href: "/admin/users", icon: Users, show: hasPermission("User", "read") },
-    { label: "Investment Plans", href: "/admin/plans", icon: TrendingUp, show: hasPermission("Investment", "read") },
-    { label: "Payment History", href: "/admin/payments", icon: History, show: hasPermission("Payment", "read") },
-    { label: "Settings", href: "/admin/settings", icon: Settings, show: hasPermission("Setting", "read") },
-  ].filter(link => link.show);
 
   return (
     <>
@@ -70,9 +59,9 @@ export function AdminSidebar({
         <div className="flex flex-col h-full overflow-hidden">
           {/* Logo Section */}
           <div className="h-16 flex items-center justify-between px-6 border-b border-white/5">
-            <Link href="/admin" className="flex items-center gap-2.5">
+            <Link href="/super-admin" className="flex items-center gap-2.5">
               <div className="flex items-center justify-center rounded-md bg-[#D4AF37] px-2.5 py-1 text-xs font-bold text-[#0F1C2E] shrink-0">
-                AX
+                SA
               </div>
               <span
                 className={cn(
@@ -80,7 +69,7 @@ export function AdminSidebar({
                   !open && "lg:opacity-0 lg:hidden"
                 )}
               >
-                Admin Panel
+                Super Admin
               </span>
             </Link>
             <Button
@@ -93,9 +82,8 @@ export function AdminSidebar({
             </Button>
           </div>
 
-          {/* Navigation Links */}
           <nav className="flex-1 py-6 px-3 space-y-1 overflow-y-auto no-scrollbar">
-            {filteredLinks.map((link) => {
+            {superAdminLinks.map((link) => {
               const Icon = link.icon;
               const isActive = pathname === link.href;
 
@@ -145,7 +133,7 @@ export function AdminSidebar({
               )}
             >
               <div className="w-8 h-8 rounded-full bg-[#D4AF37] flex items-center justify-center text-[#0F1C2E] font-bold text-xs shrink-0">
-                AD
+                SA
               </div>
               <div
                 className={cn(
@@ -157,7 +145,7 @@ export function AdminSidebar({
                   {user?.firstName} {user?.lastName}
                 </span>
                 <span className="text-[10px] text-gray-500 truncate text-uppercase tracking-wider">
-                  {user?.roleName || "Administrator"}
+                  {user?.roleName || "Super Admin"}
                 </span>
               </div>
             </div>

@@ -15,23 +15,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useLogin } from "@/lib/hooks/useAuth";
-import { Role } from "@/lib/types/auth";
 import { PasswordInput } from "@/components/ui/password-input";
 import { LoaderButton } from "@/components/ui/loader-button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" }),
-  userType: z.enum(["USER", "ADMIN"]),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
@@ -42,15 +33,13 @@ export default function LoginPage() {
     defaultValues: {
       email: "",
       password: "",
-      userType: "USER",
     },
   });
 
   const loginMutation = useLogin();
 
   const onSubmit = (data: LoginFormValues) => {
-    const payload = { ...data, userType: data.userType as Role };
-    loginMutation.mutate(payload);
+    loginMutation.mutate(data);
   };
 
   return (
@@ -60,31 +49,6 @@ export default function LoginPage() {
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <FormField
-            control={form.control}
-            name="userType"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-gray-300">Login As</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="bg-[#050B14]/50 border-[#D4AF37]/20 text-white focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 rounded-xl h-12">
-                      <SelectValue placeholder="Select login role" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent className="bg-[#0F1C2E] border-[#D4AF37]/20 text-white">
-                    <SelectItem value="USER">User / Investor</SelectItem>
-                    <SelectItem value="ADMIN">Administrator</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage className="text-red-400" />
-              </FormItem>
-            )}
-          />
-
           <FormField
             control={form.control}
             name="email"

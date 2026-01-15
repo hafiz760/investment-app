@@ -27,6 +27,7 @@ import {
   GetUserResponse,
   UpdateKycStatusRequest,
   UpdateKycStatusResponse,
+  ApiRole,
 } from "../types/auth";
 import { useAppDispatch } from "../store/hooks";
 import { setAuth, clearAuth } from "../store/slices/authSlice";
@@ -122,10 +123,14 @@ export const useLogin = (): UseMutationResult<
         description: `Welcome back, ${data.user.username}`,
       });
 
-      if (data.user.userType === "ADMIN") {
+      if (data.user.roleName === "Super Admin") {
+        router.push("/super-admin");
+      } else if (data.user.roleName === "Admin") {
         router.push("/admin");
-      } else {
+      } else if (data.user.roleName === "User") {
         router.push("/user/dashboard");
+      } else {
+        router.push("/");
       }
     },
     onError: (error) => {
@@ -296,5 +301,12 @@ export const useUpdateKycStatus = () => {
         description: error.message,
       });
     },
+  });
+};
+
+export const useRoles = () => {
+  return useQuery<ApiRole[], ApiError>({
+    queryKey: ["roles"],
+    queryFn: authApi.getRoles,
   });
 };

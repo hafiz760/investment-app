@@ -1,6 +1,6 @@
 "use client";
 
-import { Zap, Building2, Boxes, Home, Laptop, CheckCircle } from "lucide-react";
+import { Zap, Building2, Boxes, Home, Laptop, CheckCircle, BookOpen } from "lucide-react";
 import { SectionBadge } from "@/components/common";
 
 const divisions = [
@@ -84,6 +84,22 @@ const divisions = [
     ],
     locations: "Online & office-based services",
   },
+  {
+    id: "it-courses",
+    icon: BookOpen,
+    title: "IT Courses",
+    tagline: "Expert-Led IT Training",
+    description:
+      "Comprehensive IT training programs designed for both beginners and professionals. Gain skills in high-demand fields like Web Development, AI, and Cybersecurity.",
+    features: [
+      "Full-stack Web Development",
+      "Mobile App Development",
+      "AI & Machine Learning",
+      "Cybersecurity Fundamentals",
+      "Industry-recognized certifications",
+    ],
+    locations: "Online & Classroom training options",
+  },
 ];
 
 export default function ServicesSection() {
@@ -107,7 +123,7 @@ export default function ServicesSection() {
             <div
               key={division.id}
               id={division.id}
-              className={`grid lg:grid-cols-2 gap-8 items-center ${
+              className={`grid lg:grid-cols-2 gap-8 items-center scroll-mt-24 ${
                 index % 2 === 1 ? "lg:flex-row-reverse" : ""
               }`}
               data-aos="fade-up"

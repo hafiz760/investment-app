@@ -1,6 +1,7 @@
 export enum Role {
   USER = "USER",
   ADMIN = "ADMIN",
+  SUPER_ADMIN = "SUPER_ADMIN",
 }
 
 export interface User {
@@ -10,7 +11,9 @@ export interface User {
   lastName: string;
   username: string;
   phone: string;
-  userType: Role;
+  roleId: string;
+  roleName: string;
+  permissions: Permission[];
   isVerified?: boolean;
   profilePic?: string | null;
   cnic_front?: string | null;
@@ -18,6 +21,7 @@ export interface User {
   kycApproved?: boolean;
   createdAt?: string;
   updatedAt?: string;
+  userType?: Role; // Keeping as optional for backward compatibility if needed, though roleName seems to replace it
 }
 
 export interface AuthResponse {
@@ -35,6 +39,24 @@ export interface GetUserResponse {
   data: User;
 }
 
+export interface Permission {
+  id: string;
+  moduleName: string;
+  read: boolean;
+  write: boolean;
+  update: boolean;
+  delete: boolean;
+  roleId: string;
+}
+
+export interface ApiRole {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  permissions: Permission[];
+}
+
 export interface RegisterRequest {
   email: string;
   firstName: string;
@@ -42,7 +64,7 @@ export interface RegisterRequest {
   username: string;
   password: string;
   phone: string;
-  userType: Role;
+  roleId: string;
 }
 
 export interface RegisterResponse {
@@ -53,7 +75,6 @@ export interface RegisterResponse {
 export interface LoginRequest {
   email: string;
   password: string;
-  userType: Role;
 }
 
 export interface VerifyOtpRequest {
@@ -119,4 +140,32 @@ export interface UpdateKycStatusRequest {
 
 export interface UpdateKycStatusResponse {
   message: string;
+}
+export interface InvestmentPlan {
+  id: string;
+  name: string;
+  minInvestment: number;
+  maxInvestment: number;
+  monthlyReturnMin: number;
+  monthlyReturnMax: number;
+  annualGrowthMin: number;
+  annualGrowthMax: number;
+  threeYearGrowthMin: number;
+  threeYearGrowthMax: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreatePlanRequest {
+  name: string;
+  minInvestment: number;
+  maxInvestment: number;
+  monthlyReturnMin: number;
+  monthlyReturnMax: number;
+  annualGrowthMin: number;
+  annualGrowthMax: number;
+  threeYearGrowthMin: number;
+  threeYearGrowthMax: number;
+  isActive: boolean;
 }

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ChevronDown, Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -26,6 +27,7 @@ const dropdowns = [
       { label: "Bricks Supply", href: "/services#bricks" },
       { label: "Property Dealing", href: "/services#property" },
       { label: "Forex & IT", href: "/services#forex-it" },
+      { label: "IT Courses", href: "/services#it-courses" },
     ],
   },
   {
@@ -50,6 +52,23 @@ const dropdowns = [
 
 export function MainNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    const [path, hash] = href.split("#");
+    
+    // If it's a same-page hash link
+    if ((path === pathname || (path === "" && href.startsWith("#"))) && hash) {
+      const element = document.getElementById(hash);
+      if (element) {
+        e.preventDefault();
+        element.scrollIntoView({ behavior: "smooth" });
+        // Update URL hash without reload
+        window.history.pushState(null, "", href);
+        if (mobileOpen) setMobileOpen(false);
+      }
+    }
+  };
 
   return (
     <header className="section-padding sticky top-0 z-40">
@@ -57,7 +76,11 @@ export function MainNav() {
         {/* DESKTOP CAPSULE */}
         <div className="hidden lg:flex items-center justify-between rounded-full border border-[#D4AF37]/30 bg-[#0F1C2E]/60 backdrop-blur-xl px-6 py-3 shadow-[0_0_20px_rgba(212,175,55,0.1)]">
           {/* Logo */}
-          <Link href="#home" className="flex items-center gap-2.5">
+          <Link 
+            href="/#hero" 
+            className="flex items-center gap-2.5"
+            onClick={(e) => handleNavClick(e, "/#hero")}
+          >
             <div className="flex items-center justify-center rounded-md bg-[#D4AF37] px-3 py-1.5 text-xs font-bold text-[#0F1C2E]">
               IX
             </div>
@@ -73,6 +96,7 @@ export function MainNav() {
                 key={link.label}
                 href={link.href}
                 className="text-white/90 hover:text-[#D4AF37] transition-colors"
+                onClick={(e) => handleNavClick(e, link.href)}
               >
                 {link.label}
               </Link>
@@ -95,7 +119,12 @@ export function MainNav() {
                       asChild
                       className="cursor-pointer hover:bg-[#D4AF37]/10 hover:text-[#D4AF37] focus:bg-[#D4AF37]/10 focus:text-[#D4AF37]"
                     >
-                      <Link href={item.href}>{item.label}</Link>
+                      <Link 
+                        href={item.href}
+                        onClick={(e) => handleNavClick(e, item.href)}
+                      >
+                        {item.label}
+                      </Link>
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>
@@ -105,6 +134,7 @@ export function MainNav() {
             <Link
               href="/contact"
               className="text-white/90 hover:text-[#D4AF37] transition-colors"
+              onClick={(e) => handleNavClick(e, "/contact")}
             >
               Contact Us
             </Link>
@@ -123,7 +153,11 @@ export function MainNav() {
 
         {/* MOBILE BAR */}
         <div className="flex lg:hidden items-center justify-between rounded-full border border-[#D4AF37]/30 bg-[#0F1C2E]/60 backdrop-blur-xl px-4 py-3">
-          <Link href="#home" className="flex items-center gap-2">
+          <Link 
+            href="/#hero" 
+            className="flex items-center gap-2"
+            onClick={(e) => handleNavClick(e, "/#hero")}
+          >
             <div className="flex items-center justify-center rounded-md bg-[#D4AF37] px-2.5 py-1 text-xs font-bold text-[#0F1C2E]">
               IX
             </div>
@@ -154,7 +188,10 @@ export function MainNav() {
                 key={link.label}
                 href={link.href}
                 className="py-2 text-white/90 hover:text-[#D4AF37] border-b border-[#D4AF37]/20 last:border-b-0"
-                onClick={() => setMobileOpen(false)}
+                onClick={(e) => {
+                  handleNavClick(e, link.href);
+                  setMobileOpen(false);
+                }}
               >
                 {link.label}
               </Link>
@@ -172,7 +209,10 @@ export function MainNav() {
                       key={item.label}
                       href={item.href}
                       className="py-1 text-white/70 hover:text-[#D4AF37]"
-                      onClick={() => setMobileOpen(false)}
+                      onClick={(e) => {
+                        handleNavClick(e, item.href);
+                        setMobileOpen(false);
+                      }}
                     >
                       {item.label}
                     </Link>
@@ -184,7 +224,10 @@ export function MainNav() {
             <Link
               href="/contact"
               className="py-2 text-white/90 hover:text-[#D4AF37] border-b border-[#D4AF37]/20"
-              onClick={() => setMobileOpen(false)}
+              onClick={(e) => {
+                handleNavClick(e, "/contact");
+                setMobileOpen(false);
+              }}
             >
               Contact Us
             </Link>

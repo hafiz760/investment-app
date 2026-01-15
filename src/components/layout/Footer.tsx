@@ -58,6 +58,7 @@ export function Footer() {
               <li><Link href="/services#cement" className="hover:text-[#D4AF37] transition-colors">Cement Dealership</Link></li>
               <li><Link href="/services#bricks" className="hover:text-[#D4AF37] transition-colors">Bricks Supply</Link></li>
               <li><Link href="/services#property" className="hover:text-[#D4AF37] transition-colors">Property Dealing</Link></li>
+              <li><Link href="/services#it-courses" className="hover:text-[#D4AF37] transition-colors">IT Courses</Link></li>
             </ul>
           </div>
 

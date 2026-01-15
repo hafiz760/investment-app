@@ -15,104 +15,140 @@ import { cn } from "@/lib/utils";
 import { useUsers } from "@/lib/hooks/useAuth";
 import { User } from "@/lib/types/auth";
 import { useRouter } from "next/navigation";
-
-const columns: ColumnDef<User>[] = [
-  {
-    accessorKey: "firstName",
-    header: "Full Name",
-    cell: ({ row }) => (
-      <div className="flex flex-col">
-        <span className="font-semibold text-white">
-          {row.original.firstName} {row.original.lastName}
-        </span>
-        <span className="text-xs text-gray-500">@{row.original.username}</span>
-      </div>
-    ),
-  },
-  {
-    accessorKey: "email",
-    header: "Email Address",
-  },
-  {
-    accessorKey: "userType",
-    header: "Role",
-    cell: ({ row }) => (
-      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20">
-        {row.original.userType}
-      </span>
-    ),
-  },
-  {
-    accessorKey: "kycApproved",
-    header: "KYC Status",
-    cell: ({ row }) => {
-      const isApproved = row.original.kycApproved;
-      return (
-        <span
-          className={cn(
-            "px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider",
-            isApproved
-              ? "bg-green-500/10 text-green-400 border border-green-500/20"
-              : "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"
-          )}
-        >
-          {isApproved ? "Approved" : "Pending"}
-        </span>
-      );
-    },
-  },
-  {
-    accessorKey: "createdAt",
-    header: "Join Date",
-    cell: ({ row }) =>
-      row.original.createdAt
-        ? new Date(row.original.createdAt).toLocaleDateString()
-        : "N/A",
-  },
-  {
-    id: "actions",
-    header: "Actions",
-    cell: ({ row }) => (
-      <div onClick={(e) => e.stopPropagation()}>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 text-gray-400 hover:text-white"
-            >
-              <MoreVertical className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            className="bg-[#0F1C2E] border-[#D4AF37]/20 text-white shadow-xl"
-          >
-            <DropdownMenuItem className="flex items-center gap-2 cursor-pointer focus:bg-white/5 focus:text-[#D4AF37]">
-              <Edit2 className="h-3.5 w-3.5" /> Edit Profile
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-2 cursor-pointer focus:bg-white/5 focus:text-[#D4AF37]">
-              <ShieldAlert className="h-3.5 w-3.5" /> Verification
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-2 cursor-pointer focus:bg-red-500/10 text-red-400 focus:text-red-500">
-              <Trash2 className="h-3.5 w-3.5" /> Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-    ),
-  },
-];
+import { useAppSelector } from "@/lib/store/hooks";
 
 export default function AdminUsersPage() {
   const { data: response, isLoading } = useUsers();
   const users = response?.data || [];
-
+  const { user } = useAppSelector((state) => state.auth);
   const router = useRouter();
+
+  const hasPermission = (action: "write" | "update" | "delete") => {
+    if (user?.roleName === "Super Admin") return true;
+    const permission = user?.permissions?.find(p => p.moduleName === "User");
+    const result = permission ? permission[action] : false;
+    console.log(`Checking User:${action} for ${user?.roleName}:`, result);
+    return result;
+  };
+
+  React.useEffect(() => {
+    console.log("Current User in AdminUsersPage:", user);
+  }, [user]);
 
   const handleRowClick = (user: User) => {
     router.push(`/admin/users/${user.id}`);
   };
+
+  const columns: ColumnDef<User>[] = [
+    {
+      accessorKey: "firstName",
+      header: "Full Name",
+      cell: ({ row }) => (
+        <div className="flex flex-col">
+          <span className="font-semibold text-white">
+            {row.original.firstName} {row.original.lastName}
+          </span>
+          <span className="text-xs text-gray-500">@{row.original.username}</span>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "email",
+      header: "Email Address",
+    },
+    {
+      accessorKey: "userType",
+      header: "Role",
+      cell: ({ row }) => (
+        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20">
+          {row.original.userType}
+        </span>
+      ),
+    },
+    {
+      accessorKey: "kycApproved",
+      header: "KYC Status",
+      cell: ({ row }) => {
+        const isApproved = row.original.kycApproved;
+        return (
+          <span
+            className={cn(
+              "px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider",
+              isApproved
+                ? "bg-green-500/10 text-green-400 border border-green-500/20"
+                : "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"
+            )}
+          >
+            {isApproved ? "Approved" : "Pending"}
+          </span>
+        );
+      },
+    },
+    {
+      accessorKey: "createdAt",
+      header: "Join Date",
+      cell: ({ row }) =>
+        row.original.createdAt
+          ? new Date(row.original.createdAt).toLocaleDateString()
+          : "N/A",
+    },
+    {
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => (
+        <div onClick={(e) => e.stopPropagation()}>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-gray-400 hover:text-white"
+                disabled={!hasPermission("update") && !hasPermission("delete")}
+              >
+                <MoreVertical className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className="bg-[#0F1C2E] border-[#D4AF37]/20 text-white shadow-xl"
+            >
+              {hasPermission("update") && (
+                <>
+                  <DropdownMenuItem className="flex items-center gap-2 cursor-pointer focus:bg-white/5 focus:text-[#D4AF37]">
+                    <Edit2 className="h-3.5 w-3.5" /> Edit Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="flex items-center gap-2 cursor-pointer focus:bg-white/5 focus:text-[#D4AF37]">
+                    <ShieldAlert className="h-3.5 w-3.5" /> Verification
+                  </DropdownMenuItem>
+                </>
+              )}
+              {hasPermission("delete") && (
+                <DropdownMenuItem className="flex items-center gap-2 cursor-pointer focus:bg-red-500/10 text-red-400 focus:text-red-500">
+                  <Trash2 className="h-3.5 w-3.5" /> Delete
+                </DropdownMenuItem>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      ),
+    },
+  ];
+
+  if (isLoading) {
+    return <div className="h-[60vh] flex items-center justify-center text-gray-400">Loading users...</div>;
+  }
+
+  const canRead = user?.roleName === "Super Admin" || user?.permissions?.find(p => p.moduleName === "User")?.read;
+
+  if (!canRead && user) {
+    return (
+      <div className="h-[60vh] flex flex-col items-center justify-center gap-4 text-center">
+        <ShieldAlert className="h-16 w-16 text-red-500/50" />
+        <h2 className="text-2xl font-bold text-white">Access Denied</h2>
+        <p className="text-gray-400 max-w-md">You do not have permission to view users. Please contact your administrator.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
@@ -125,10 +161,12 @@ export default function AdminUsersPage() {
             Manage and monitor all platform users.
           </p>
         </div>
-        <Button className="bg-[#D4AF37] hover:bg-[#B8962E] text-[#0F1C2E] font-bold rounded-xl h-11 px-6 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
-          <Plus className="h-5 w-5 mr-2" />
-          Add New User
-        </Button>
+        {hasPermission("write") && (
+          <Button className="bg-[#D4AF37] hover:bg-[#B8962E] text-[#0F1C2E] font-bold rounded-xl h-11 px-6 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
+            <Plus className="h-5 w-5 mr-2" />
+            Add New User
+          </Button>
+        )}
       </div>
 
       <AdminDataTable

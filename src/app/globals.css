@@ -48,50 +48,55 @@
 
 :root {
   --radius: 0.625rem;
-  
+
   /* OPTION 1: NAVY BLUE + GOLD (CORPORATE TRUST) */
-  
+
   /* Primary - Navy Blue (Trust & Stability) */
   --primary: oklch(0.35 0.08 250);
   --primary-foreground: oklch(0.99 0 0);
-  
+
   /* Secondary - Gold (Wealth & Premium) */
   --secondary: oklch(0.75 0.15 85);
   --secondary-foreground: oklch(0.20 0 0);
-  
+
   /* Accent - Light Blue (Modern) */
   --accent: oklch(0.70 0.12 240);
   --accent-foreground: oklch(0.99 0 0);
-  
+
   /* Background & Cards */
   --background: oklch(0.99 0 0);
   --foreground: oklch(0.20 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.20 0 0);
-  
+
   /* Popover */
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.20 0 0);
-  
+
   /* Muted */
   --muted: oklch(0.95 0 0);
   --muted-foreground: oklch(0.55 0 0);
-  
+
   /* Destructive */
   --destructive: oklch(0.577 0.245 27.325);
-  
+
   /* Border & Input */
   --border: oklch(0.90 0 0);
   --input: oklch(0.90 0 0);
   --ring: oklch(0.35 0.08 250);
-  
+
   /* Charts - Business Divisions */
-  --chart-1: oklch(0.60 0.15 145);   /* Green - Growth/Coal */
-  --chart-2: oklch(0.70 0.12 240);   /* Blue - Cement */
-  --chart-3: oklch(0.75 0.15 85);    /* Gold - Investment */
-  --chart-4: oklch(0.55 0.18 280);   /* Purple - Property */
-  --chart-5: oklch(0.60 0.15 40);    /* Orange - Forex/IT */
-  
+  --chart-1: oklch(0.60 0.15 145);
+  /* Green - Growth/Coal */
+  --chart-2: oklch(0.70 0.12 240);
+  /* Blue - Cement */
+  --chart-3: oklch(0.75 0.15 85);
+  /* Gold - Investment */
+  --chart-4: oklch(0.55 0.18 280);
+  /* Purple - Property */
+  --chart-5: oklch(0.60 0.15 40);
+  /* Orange - Forex/IT */
+
   /* Sidebar */
   --sidebar: oklch(0.99 0 0);
   --sidebar-foreground: oklch(0.20 0 0);
@@ -107,37 +112,37 @@
   /* Dark mode - Professional navy background */
   --background: oklch(0.18 0.02 250);
   --foreground: oklch(0.98 0 0);
-  
+
   --primary: oklch(0.70 0.12 240);
   --primary-foreground: oklch(0.18 0.02 250);
-  
+
   --secondary: oklch(0.75 0.15 85);
   --secondary-foreground: oklch(0.18 0.02 250);
-  
+
   --accent: oklch(0.70 0.12 240);
   --accent-foreground: oklch(0.98 0 0);
-  
+
   --card: oklch(0.22 0.02 250);
   --card-foreground: oklch(0.98 0 0);
-  
+
   --popover: oklch(0.22 0.02 250);
   --popover-foreground: oklch(0.98 0 0);
-  
+
   --muted: oklch(0.28 0.02 250);
   --muted-foreground: oklch(0.70 0 0);
-  
+
   --destructive: oklch(0.704 0.191 22.216);
-  
+
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.70 0.12 240);
-  
+
   --chart-1: oklch(0.65 0.18 145);
   --chart-2: oklch(0.70 0.12 240);
   --chart-3: oklch(0.75 0.15 85);
   --chart-4: oklch(0.65 0.20 280);
   --chart-5: oklch(0.65 0.18 40);
-  
+
   --sidebar: oklch(0.22 0.02 250);
   --sidebar-foreground: oklch(0.98 0 0);
   --sidebar-primary: oklch(0.70 0.12 240);
@@ -152,27 +157,32 @@
   * {
     @apply border-border outline-ring/50;
   }
-  
+
   html {
-    @apply overflow-x-hidden;
+    @apply overflow-x-hidden scroll-smooth;
   }
-  
+
   body {
     @apply bg-background text-foreground font-sans antialiased overflow-x-hidden;
   }
-  
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-bold tracking-tight;
   }
-  
+
   h1 {
     @apply text-4xl lg:text-6xl;
   }
-  
+
   h2 {
     @apply text-3xl lg:text-5xl;
   }
-  
+
   h3 {
     @apply text-2xl lg:text-4xl;
   }
@@ -182,15 +192,15 @@
   .container-custom {
     @apply container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 2xl:px-20;
   }
-  
+
   .section-padding {
     @apply px-4 sm:px-6 lg:px-12 xl:px-16 2xl:px-20;
   }
-  
+
   .section-wrapper {
     @apply overflow-x-hidden w-full;
   }
-  
+
   .text-balance {
     text-wrap: balance;
   }
@@ -198,13 +208,16 @@
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
   }
+
   .custom-scrollbar::-webkit-scrollbar-track {
     background: transparent;
   }
+
   .custom-scrollbar::-webkit-scrollbar-thumb {
     background: #D4AF3740;
     border-radius: 10px;
   }
+
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #D4AF3760;
   }
