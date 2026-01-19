@@ -2,12 +2,10 @@
 
 import HeroSection from "@/components/sections/HeroSection";
 import HighlightCardsSection from "@/components/sections/HighlightCardsSection";
-import ServicesSection from "@/components/sections/ServicesSection";
 import StatsSection from "@/components/sections/StatsSection";
 import AboutSection from "@/components/sections/AboutSection";
 import CtaBannerSection from "@/components/sections/CtaBannerSection";
 import InvestmentPlansSection from "@/components/sections/InvestmentPlansSection";
-import BlogSection from "@/components/sections/BlogSection";
 
 export default function HomePage() {
   return (
@@ -15,11 +13,9 @@ export default function HomePage() {
       <HeroSection />
       <HighlightCardsSection />
       <InvestmentPlansSection />
-      {/* <ServicesSection /> */}
       <StatsSection />
       <AboutSection />
       <CtaBannerSection />
-      <BlogSection />
     </main>
   );
 }

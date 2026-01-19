@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import Image from "next/image";
 import { Zap, Building2, Boxes, Home, Laptop, CheckCircle, BookOpen } from "lucide-react";
 import { SectionBadge } from "@/components/common";
 
@@ -19,6 +21,7 @@ const divisions = [
       "Quality assurance guaranteed",
     ],
     locations: "Karachi, Lahore, Islamabad",
+    image: "/images/services/coal.png",
   },
   {
     id: "cement",
@@ -35,6 +38,7 @@ const divisions = [
       "Competitive wholesale rates",
     ],
     locations: "Major cities across Pakistan",
+    image: "/images/services/cement.png",
   },
   {
     id: "bricks",
@@ -51,6 +55,7 @@ const divisions = [
       "Quality tested products",
     ],
     locations: "Manufacturing & supply nationwide",
+    image: "/images/services/bricks.png",
   },
   {
     id: "property",
@@ -67,6 +72,7 @@ const divisions = [
       "Legal documentation support",
     ],
     locations: "Prime locations nationwide",
+    image: "/images/services/property.png",
   },
   {
     id: "forex-it",
@@ -83,6 +89,7 @@ const divisions = [
       "IT consulting services",
     ],
     locations: "Online & office-based services",
+    image: "/images/services/forex.png",
   },
   {
     id: "it-courses",
@@ -99,23 +106,33 @@ const divisions = [
       "Industry-recognized certifications",
     ],
     locations: "Online & Classroom training options",
+    image: "/images/services/it-courses.png",
   },
 ];
 
 export default function ServicesSection() {
   return (
-    <section className="section-padding py-10 lg:py-20 bg-gradient-to-b from-[#0F1C2E]/50 to-transparent">
+    <section className="section-padding pt-4 pb-10 lg:pt-16 lg:pb-20 to-transparent">
       <div className="container mx-auto">
-        <div className="text-center mb-16" data-aos="fade-up">
-          <SectionBadge className="mb-2">
-            Business Divisions in Detail
-          </SectionBadge>
-          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
-            Comprehensive Business Solutions
-          </h2>
-          <p className="text-white/70 max-w-2xl mx-auto text-lg">
-            Explore our diverse business operations across multiple sectors
-          </p>
+        <div className="flex flex-col gap-8 mb-16" data-aos="fade-up">
+          {/* Breadcrumb integration */}
+          <div className="flex items-center gap-2 text-[13px] font-medium text-white/40 uppercase tracking-widest">
+            <Link href="/" className="hover:text-[#D4AF37] transition-colors">Home</Link>
+            <span className="text-white/20 select-none">/</span>
+            <span className="text-[#D4AF37]">Services</span>
+          </div>
+
+          <div className="text-center">
+            <SectionBadge className="mb-2">
+              Business Divisions in Detail
+            </SectionBadge>
+            <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
+              Comprehensive Business Solutions
+            </h2>
+            <p className="text-white/70 max-w-2xl mx-auto text-lg">
+              Explore our diverse business operations across multiple sectors
+            </p>
+          </div>
         </div>
 
         <div className="space-y-12">
@@ -166,11 +183,14 @@ export default function ServicesSection() {
               </div>
 
               <div className={`${index % 2 === 1 ? "lg:order-1" : ""}`}>
-                <div className="bg-gradient-to-br from-[#0F1C2E] to-[#1a2942] border border-[#D4AF37]/30 rounded-2xl p-12 h-[400px] flex items-center justify-center">
-                  <div className="text-center">
-                    <division.icon className="w-24 h-24 text-[#D4AF37] mx-auto mb-4" />
-                    <p className="text-white/50">Image Placeholder</p>
-                  </div>
+                <div className="relative overflow-hidden rounded-2xl border border-[#D4AF37]/30 h-[400px]">
+                  <Image
+                    src={division.image}
+                    alt={division.title}
+                    fill
+                    className="object-cover transition-transform duration-500 hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0F1C2E] via-transparent to-transparent opacity-60" />
                 </div>
               </div>
             </div>

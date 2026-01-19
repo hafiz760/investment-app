@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
@@ -9,9 +10,15 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="section-padding py-10 lg:py-20 bg-gradient-to-b from-transparent to-[#0F1C2E]/50"
+      className="section-padding pt-4 pb-10 lg:pb-20 bg-gradient-to-b from-transparent to-[#0F1C2E]/50"
     >
       <div className="container mx-auto">
+        {/* Breadcrumb integration */}
+        <div className="flex items-center gap-2 text-[13px] font-medium text-white/40 uppercase tracking-widest mb-12" data-aos="fade-up">
+          <Link href="/" className="hover:text-[#D4AF37] transition-colors">Home</Link>
+          <span className="text-white/20 select-none">/</span>
+          <span className="text-[#D4AF37]">Contact</span>
+        </div>
         <div className="text-center mb-16" data-aos="fade-up">
           <SectionBadge className="mb-2">Get In Touch</SectionBadge>
           <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">

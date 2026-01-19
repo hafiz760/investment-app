@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Check, TrendingUp, Clock, DollarSign, Shield } from "lucide-react";
 import { PrimaryButton, SectionBadge } from "@/components/common";
 
@@ -62,8 +63,14 @@ const plans = [
 
 export default function InvestmentPlansSection() {
   return (
-    <section id="plans" className="section-padding py-10 lg:py-20 scroll-mt-24">
+    <section id="plans" className="section-padding lg:pb-20">
       <div className="container mx-auto">
+        {/* Breadcrumb integration */}
+        <div className="flex items-center gap-2 text-[13px] font-medium text-white/40 uppercase tracking-widest mb-12" data-aos="fade-up">
+          <Link href="/" className="hover:text-[#D4AF37] transition-colors">Home</Link>
+          <span className="text-white/20 select-none">/</span>
+          <span className="text-[#D4AF37]">Investment Plans</span>
+        </div>
         {/* Investment Overview */}
         <div id="investment-overview" className="mb-20 scroll-mt-24">
           <div className="text-center mb-12" data-aos="fade-up">
