@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { authApi } from "../api/auth";
+import { authApi } from "../api/auth.api";
 import { ApiRole, Permission } from "@/lib/types/auth";
 import { toast } from "sonner";
 
@@ -29,8 +29,13 @@ export function useCreateRole() {
 export function useUpdateRole() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: { name: string; permissions: Partial<Permission>[] } }) => 
-      authApi.updateRole(id, payload),
+    mutationFn: ({
+      id,
+      payload,
+    }: {
+      id: string;
+      payload: { name: string; permissions: Partial<Permission>[] };
+    }) => authApi.updateRole(id, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["roles"] });
       toast.success("Role updated successfully");

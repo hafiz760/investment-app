@@ -17,6 +17,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/lib/store/hooks";
+import { Logo } from "@/components/common/Logo";
 
 const superAdminLinks = [
   { label: "Dashboard", href: "/super-admin", icon: LayoutDashboard },
@@ -60,9 +61,10 @@ export function SuperAdminSidebar({
           {/* Logo Section */}
           <div className="h-16 flex items-center justify-between px-6 border-b border-white/5">
             <Link href="/super-admin" className="flex items-center gap-2.5">
-              <div className="flex items-center justify-center rounded-md bg-[#D4AF37] px-2.5 py-1 text-xs font-bold text-[#0F1C2E] shrink-0">
-                SA
-              </div>
+              <Logo 
+                size={open ? "md" : "sm"} 
+                className="shrink-0 ring-2 ring-[#D4AF37]/20 transition-all duration-300" 
+              />
               <span
                 className={cn(
                   "text-lg font-bold tracking-tight text-white transition-opacity duration-300",

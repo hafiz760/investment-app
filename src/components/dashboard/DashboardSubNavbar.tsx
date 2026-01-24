@@ -33,7 +33,6 @@ const links = [
     ],
   },
   { label: "Orders", href: "/user/orders", icon: ShoppingBag },
-  { label: "Wishlist", href: "/user/wishlist", icon: Heart },
   {
     label: "Deposit",
     href: "/user/deposit",
@@ -84,7 +83,7 @@ export function DashboardSubNavbar() {
                       "flex items-center gap-2 text-sm font-medium whitespace-nowrap transition-colors border-b-2 border-transparent h-full px-1 outline-none",
                       isActive
                         ? "text-[#D4AF37] border-[#D4AF37]"
-                        : "text-gray-300 hover:text-[#D4AF37]"
+                        : "text-gray-300 hover:text-[#D4AF37]",
                     )}
                   >
                     <Icon className="h-4 w-4" />
@@ -118,7 +117,7 @@ export function DashboardSubNavbar() {
                 "flex items-center gap-2 text-sm font-medium whitespace-nowrap transition-colors border-b-2 border-transparent h-full px-1",
                 isActive
                   ? "text-[#D4AF37] border-[#D4AF37]"
-                  : "text-gray-300 hover:text-[#D4AF37]"
+                  : "text-gray-300 hover:text-[#D4AF37]",
               )}
             >
               <Icon className="h-4 w-4" />

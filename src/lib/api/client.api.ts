@@ -1,8 +1,8 @@
 import axios, { AxiosError, AxiosInstance } from "axios";
-import { ApiError } from "../types/auth";
 import { store } from "../store";
 import { clearAuth } from "../store/slices/authSlice";
 import { clearAuthCookie } from "../utils/cookies";
+import { ApiError } from "../types/error";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL || "https://roi-backend-7rbr.onrender.com";
@@ -27,7 +27,7 @@ apiClient.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 apiClient.interceptors.response.use(
@@ -55,7 +55,7 @@ apiClient.interceptors.response.use(
     }
 
     return Promise.reject(apiError);
-  }
+  },
 );
 
 export default apiClient;

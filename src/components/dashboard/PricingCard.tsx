@@ -1,7 +1,5 @@
 "use client";
-
-import React from "react";
-import { Check, X } from "lucide-react";
+import { Check, X, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,25 +15,33 @@ interface PricingFeature {
 }
 
 interface PricingCardProps {
+  id: string;
   title: string;
   price: string;
   period: string;
   features: PricingFeature[];
   isPopular?: boolean;
+  onDirectPayment: (planId: string) => Promise<void>;
+  onWalletPayment: (planId: string) => Promise<void>;
+  isProcessing: boolean;
 }
 
 export function PricingCard({
+  id,
   title,
   price,
   period,
   features,
   isPopular,
+  onDirectPayment,
+  onWalletPayment,
+  isProcessing,
 }: PricingCardProps) {
   return (
     <Card
       className={cn(
         "bg-[#0F1C2E]/60 backdrop-blur-xl border border-[#D4AF37]/20 shadow-2xl hover:border-[#D4AF37]/40 transition-all text-center group",
-        isPopular && "ring-2 ring-[#D4AF37]"
+        isPopular && "ring-2 ring-[#D4AF37]",
       )}
     >
       <CardHeader className="pt-8">
@@ -70,8 +76,19 @@ export function PricingCard({
         </div>
       </CardContent>
       <CardFooter className="pb-8 px-8">
-        <Button className="w-full bg-[#D4AF37] hover:bg-[#B8962E] text-[#0F1C2E] py-6 rounded-lg font-bold transition-all shadow-lg hover:shadow-[#D4AF37]/20">
-          Select plan
+        <Button
+          onClick={() => onDirectPayment(id)}
+          disabled={isProcessing}
+          className="w-full bg-[#D4AF37] hover:bg-[#B8962E] text-[#0F1C2E] py-6 rounded-lg font-bold transition-all shadow-lg hover:shadow-[#D4AF37]/20 disabled:opacity-50"
+        >
+          {isProcessing ? (
+            <>
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              Processing...
+            </>
+          ) : (
+            "Invest Now"
+          )}
         </Button>
       </CardFooter>
     </Card>

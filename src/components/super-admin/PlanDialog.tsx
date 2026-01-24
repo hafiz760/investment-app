@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { InvestmentPlan, CreatePlanRequest } from "@/lib/types/auth";
+import { InvestmentPlan, CreatePlanRequest } from "@/lib/types/plans";
 import { useCreatePlan, useUpdatePlan } from "@/lib/hooks/usePlans";
 import { useForm } from "react-hook-form";
 
@@ -28,20 +28,22 @@ export function PlanDialog({
   const createMutation = useCreatePlan();
   const updateMutation = useUpdatePlan();
 
-  const { register, handleSubmit, reset, setValue, watch } = useForm<CreatePlanRequest>({
-    defaultValues: {
-      name: "",
-      minInvestment: 0,
-      maxInvestment: 0,
-      monthlyReturnMin: 0,
-      monthlyReturnMax: 0,
-      annualGrowthMin: 0,
-      annualGrowthMax: 0,
-      threeYearGrowthMin: 0,
-      threeYearGrowthMax: 0,
-      isActive: true,
-    },
-  });
+  const { register, handleSubmit, reset, setValue, watch } =
+    useForm<CreatePlanRequest>({
+      defaultValues: {
+        name: "",
+        minInvestment: 0,
+        maxInvestment: 0,
+        monthlyReturnMin: 0,
+        monthlyReturnMax: 0,
+        annualGrowthMin: 0,
+        annualGrowthMax: 0,
+        threeYearGrowthMin: 0,
+        threeYearGrowthMax: 0,
+        price: 0,
+        isActive: true,
+      },
+    });
 
   const isActive = watch("isActive");
 
@@ -57,6 +59,7 @@ export function PlanDialog({
         annualGrowthMax: plan.annualGrowthMax,
         threeYearGrowthMin: plan.threeYearGrowthMin,
         threeYearGrowthMax: plan.threeYearGrowthMax,
+        price: plan.price,
         isActive: plan.isActive,
       });
     } else {
@@ -70,6 +73,7 @@ export function PlanDialog({
         annualGrowthMax: 10,
         threeYearGrowthMin: 25,
         threeYearGrowthMax: 35,
+        price: 0,
         isActive: true,
       });
     }
@@ -87,6 +91,7 @@ export function PlanDialog({
       annualGrowthMax: Number(values.annualGrowthMax),
       threeYearGrowthMin: Number(values.threeYearGrowthMin),
       threeYearGrowthMax: Number(values.threeYearGrowthMax),
+      price: Number(values.price),
     };
 
     try {
@@ -121,7 +126,15 @@ export function PlanDialog({
                 placeholder="e.g. Basic Growth Plan"
               />
             </div>
-
+            <div className="space-y-2">
+              <Label htmlFor="price">Plan Price ($)</Label>
+              <Input
+                id="price"
+                type="number"
+                {...register("price", { required: true })}
+                className="bg-white/5 border-[#D4AF37]/20 focus:border-[#D4AF37]"
+              />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="minInvestment">Min Investment ($)</Label>
               <Input
@@ -211,7 +224,9 @@ export function PlanDialog({
             <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 md:col-span-2">
               <div className="space-y-0.5">
                 <Label className="text-white">Active Status</Label>
-                <p className="text-xs text-gray-500 italic">Toggle whether this plan is available for investment.</p>
+                <p className="text-xs text-gray-500 italic">
+                  Toggle whether this plan is available for investment.
+                </p>
               </div>
               <Switch
                 checked={isActive}

@@ -1,7 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { Plus, MoreVertical, Edit2, Trash2, TrendingUp, Power, PowerOff } from "lucide-react";
+import {
+  Plus,
+  MoreVertical,
+  Edit2,
+  Trash2,
+  TrendingUp,
+  Power,
+  PowerOff,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AdminDataTable } from "@/components/admin/AdminDataTable";
 import { ColumnDef } from "@tanstack/react-table";
@@ -13,7 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { usePlans, useDeletePlan, useUpdatePlan } from "@/lib/hooks/usePlans";
-import { InvestmentPlan } from "@/lib/types/auth";
+import { InvestmentPlan } from "@/lib/types/plans";
 import { PlanDialog } from "@/components/super-admin/PlanDialog";
 
 export default function PlansPage() {
@@ -53,7 +61,9 @@ export default function PlansPage() {
       cell: ({ row }) => (
         <div className="flex flex-col">
           <span className="font-semibold text-white">{row.original.name}</span>
-          <span className="text-[10px] text-gray-500 font-mono">{row.original.id}</span>
+          <span className="text-[10px] text-gray-500 font-mono">
+            {row.original.id}
+          </span>
         </div>
       ),
     },
@@ -62,7 +72,8 @@ export default function PlansPage() {
       header: "Investment Range",
       cell: ({ row }) => (
         <span className="text-gray-300">
-          ${row.original.minInvestment.toLocaleString()} - ${row.original.maxInvestment.toLocaleString()}
+          ${row.original.minInvestment.toLocaleString()} - $
+          {row.original.maxInvestment.toLocaleString()}
         </span>
       ),
     },
@@ -81,10 +92,12 @@ export default function PlansPage() {
       cell: ({ row }) => (
         <div className="flex flex-col">
           <span className="text-xs text-gray-300">
-            Year: {row.original.annualGrowthMin}%-{row.original.annualGrowthMax}%
+            Year: {row.original.annualGrowthMin}%-{row.original.annualGrowthMax}
+            %
           </span>
           <span className="text-xs text-blue-400">
-            3Y: {row.original.threeYearGrowthMin}%-{row.original.threeYearGrowthMax}%
+            3Y: {row.original.threeYearGrowthMin}%-
+            {row.original.threeYearGrowthMax}%
           </span>
         </div>
       ),
@@ -98,7 +111,7 @@ export default function PlansPage() {
             "px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border",
             row.original.isActive
               ? "bg-green-500/10 text-green-400 border-green-500/20"
-              : "bg-red-500/10 text-red-400 border-red-500/20"
+              : "bg-red-500/10 text-red-400 border-red-500/20",
           )}
         >
           {row.original.isActive ? "Active" : "Inactive"}
@@ -112,18 +125,25 @@ export default function PlansPage() {
         <div onClick={(e) => e.stopPropagation()}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-gray-400 hover:text-white"
+              >
                 <MoreVertical className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-[#0F1C2E] border-[#D4AF37]/20 text-white shadow-xl">
-              <DropdownMenuItem 
+            <DropdownMenuContent
+              align="end"
+              className="bg-[#0F1C2E] border-[#D4AF37]/20 text-white shadow-xl"
+            >
+              <DropdownMenuItem
                 onClick={() => handleEdit(row.original)}
                 className="flex items-center gap-2 cursor-pointer focus:bg-white/5 focus:text-[#D4AF37]"
               >
                 <Edit2 className="h-3.5 w-3.5" /> Edit Plan
               </DropdownMenuItem>
-              <DropdownMenuItem 
+              <DropdownMenuItem
                 onClick={() => handleToggleStatus(row.original)}
                 className="flex items-center gap-2 cursor-pointer focus:bg-white/5 focus:text-[#D4AF37]"
               >
@@ -137,7 +157,7 @@ export default function PlansPage() {
                   </>
                 )}
               </DropdownMenuItem>
-              <DropdownMenuItem 
+              <DropdownMenuItem
                 onClick={() => handleDelete(row.original.id)}
                 className="flex items-center gap-2 cursor-pointer focus:bg-red-500/10 text-red-400 focus:text-red-500"
               >
@@ -158,9 +178,11 @@ export default function PlansPage() {
             <TrendingUp className="h-8 w-8 text-[#D4AF37]" />
             Investment Plans
           </h1>
-          <p className="text-gray-400 mt-1">Configure and manage investment products for users.</p>
+          <p className="text-gray-400 mt-1">
+            Configure and manage investment products for users.
+          </p>
         </div>
-        <Button 
+        <Button
           onClick={handleCreate}
           className="bg-[#D4AF37] hover:bg-[#B8962E] text-[#0F1C2E] font-bold rounded-xl h-11 px-6 shadow-[0_0_20px_rgba(212,175,55,0.2)]"
         >
@@ -175,10 +197,10 @@ export default function PlansPage() {
         searchPlaceholder="Search plans by name..."
       />
 
-      <PlanDialog 
-        open={isDialogOpen} 
-        onOpenChange={setIsDialogOpen} 
-        plan={selectedPlan} 
+      <PlanDialog
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        plan={selectedPlan}
       />
     </div>
   );

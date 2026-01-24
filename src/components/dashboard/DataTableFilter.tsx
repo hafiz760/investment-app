@@ -42,16 +42,7 @@ export function DataTableFilter({
           <SheetTitle className="text-xl font-bold text-white">
             {title}
           </SheetTitle>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setOpen(false)}
-            className="text-white/60 hover:text-white hover:bg-white/5 h-8 w-8"
-          >
-            <X className="h-5 w-5" />
-          </Button>
         </SheetHeader>
-
         <div className="p-6 space-y-6">
           <div className="space-y-2.5">
             <Label

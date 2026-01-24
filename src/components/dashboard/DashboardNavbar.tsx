@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Search, Bell, User, Sun } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/common/Logo";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,9 +25,7 @@ export function DashboardNavbar() {
     <header className="border-b border-[#D4AF37]/20 bg-[#0F1C2E]/60 backdrop-blur-xl text-white h-16 flex items-center px-4 lg:px-6 sticky top-0 z-50">
       <div className="flex items-center gap-4 w-full justify-between">
         <Link href="/user/dashboard" className="flex items-center gap-2.5">
-          <div className="flex items-center justify-center rounded-md bg-[#D4AF37] px-3 py-1.5 text-xs font-bold text-[#0F1C2E]">
-            IX
-          </div>
+          <Logo className="ring-2 ring-[#D4AF37]/20" />
           <span className="text-lg font-bold tracking-tight text-[#0F1C2E] dark:text-white">
             InvestaX
           </span>

@@ -1,4 +1,4 @@
-import apiClient from "./client";
+import apiClient from "./client.api";
 import { store } from "../store";
 import {
   RegisterRequest,
@@ -20,16 +20,13 @@ import {
   UpdateKycStatusRequest,
   UpdateKycStatusResponse,
   ApiRole,
-  InvestmentPlan,
-  CreatePlanRequest,
 } from "../types/auth";
-import axios from "axios";
 
 export const authApi = {
   register: async (data: RegisterRequest): Promise<RegisterResponse> => {
     const response = await apiClient.post<RegisterResponse>(
       "/auth/register",
-      data
+      data,
     );
     return response.data;
   },
@@ -37,16 +34,16 @@ export const authApi = {
   verifyOtp: async (data: VerifyOtpRequest): Promise<AuthResponse> => {
     const response = await apiClient.post<AuthResponse>(
       "/auth/verify-otp",
-      data
+      data,
     );
     return response.data;
   },
   verifyForgotOtp: async (
-    data: VerifyOtpRequest
+    data: VerifyOtpRequest,
   ): Promise<VerifyForgotOtpResponse> => {
     const response = await apiClient.post<VerifyForgotOtpResponse>(
       "/auth/verify-forgot-password-otp",
-      data
+      data,
     );
     return response.data;
   },
@@ -54,7 +51,7 @@ export const authApi = {
   resendOtp: async (data: ResendOtpRequest): Promise<AuthResponse> => {
     const response = await apiClient.post<AuthResponse>(
       "/auth/resend-otp",
-      data
+      data,
     );
     return response.data;
   },
@@ -65,31 +62,31 @@ export const authApi = {
   },
 
   forgotPassword: async (
-    data: ForgotPasswordRequest
+    data: ForgotPasswordRequest,
   ): Promise<ForgotPasswordResponse> => {
     const response = await apiClient.post<ForgotPasswordResponse>(
       "/auth/forgot-password",
-      data
+      data,
     );
     return response.data;
   },
 
   resetPassword: async (
-    data: ResetPasswordRequest
+    data: ResetPasswordRequest,
   ): Promise<ResetPasswordResponse> => {
     const response = await apiClient.post<ResetPasswordResponse>(
       "/auth/reset-password",
-      data
+      data,
     );
     return response.data;
   },
 
   updatePassword: async (
-    data: UpdatePasswordRequest
+    data: UpdatePasswordRequest,
   ): Promise<UpdatePasswordResponse> => {
     const response = await apiClient.patch<UpdatePasswordResponse>(
       "/auth/update-password",
-      data
+      data,
     );
     return response.data;
   },
@@ -102,7 +99,7 @@ export const authApi = {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      }
+      },
     );
     return response.data;
   },
@@ -118,11 +115,11 @@ export const authApi = {
   },
   updateKycStatus: async (
     id: string,
-    data: UpdateKycStatusRequest
+    data: UpdateKycStatusRequest,
   ): Promise<UpdateKycStatusResponse> => {
     const response = await apiClient.patch<UpdateKycStatusResponse>(
       `/auth/users/${id}/kyc-status`,
-      data
+      data,
     );
     return response.data;
   },
@@ -139,7 +136,7 @@ export const authApi = {
   },
   updateRole: async (
     id: string,
-    payload: { name: string; permissions: any[] }
+    payload: { name: string; permissions: any[] },
   ): Promise<ApiRole> => {
     const response = await apiClient.patch<ApiRole>(`/roles/${id}`, payload);
     return response.data;
@@ -149,22 +146,4 @@ export const authApi = {
   },
 
   // Plans API
-  getPlans: async (): Promise<InvestmentPlan[]> => {
-    const response = await apiClient.get<InvestmentPlan[]>("/plans");
-    return response.data;
-  },
-  createPlan: async (data: CreatePlanRequest): Promise<InvestmentPlan> => {
-    const response = await apiClient.post<InvestmentPlan>("/plans", data);
-    return response.data;
-  },
-  updatePlan: async (
-    id: string,
-    data: Partial<CreatePlanRequest>
-  ): Promise<InvestmentPlan> => {
-    const response = await apiClient.patch<InvestmentPlan>(`/plans/${id}`, data);
-    return response.data;
-  },
-  deletePlan: async (id: string): Promise<void> => {
-    await apiClient.delete(`/plans/${id}`);
-  },
 };

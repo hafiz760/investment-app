@@ -16,91 +16,182 @@ import {
   History,
   Calculator,
   Plus,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { cn } from "@/lib/utils";
-
-const stats = [
-  {
-    label: "Balance",
-    value: "$500.6",
-    icon: Wallet,
-    iconClassName: "bg-blue-50 text-blue-600",
-  },
-  {
-    label: "Profit Balance",
-    value: "$74.71",
-    icon: TrendingUp,
-    iconClassName: "bg-green-50 text-green-600",
-  },
-  {
-    label: "Total Profit",
-    value: "$15,240",
-    icon: BadgeDollarSign,
-    iconClassName: "bg-indigo-50 text-indigo-600",
-  },
-  {
-    label: "Total Invest",
-    value: "$136,300",
-    icon: PieChart,
-    iconClassName: "bg-purple-50 text-purple-600",
-  },
-  {
-    label: "Current Badge",
-    value: "Hyip Victor",
-    icon: Medal,
-    iconClassName: "bg-yellow-50 text-yellow-600",
-  },
-  {
-    label: "Total Deposit",
-    value: "$11,978.47",
-    icon: ArrowDownToLine,
-    iconClassName: "bg-teal-50 text-teal-600",
-  },
-  {
-    label: "Total Payout",
-    value: "$57.3",
-    icon: ArrowUpFromLine,
-    iconClassName: "bg-orange-50 text-orange-600",
-  },
-  {
-    label: "Total Ticket",
-    value: "3",
-    icon: Ticket,
-    iconClassName: "bg-rose-50 text-rose-600",
-  },
-];
-
-const recentActivity = [
-  {
-    label: "Support",
-    value: "0",
-    icon: Headphones,
-    iconClassName: "bg-gray-50 text-gray-600",
-  },
-  {
-    label: "Withdraw",
-    value: "$0",
-    icon: ArrowUpFromLine,
-    iconClassName: "bg-gray-50 text-gray-600",
-  },
-  {
-    label: "Invest",
-    value: "$500",
-    icon: Calculator,
-    iconClassName: "bg-gray-50 text-gray-600",
-  },
-  {
-    label: "Deposit",
-    value: "$1,000",
-    icon: Plus,
-    iconClassName: "bg-gray-50 text-gray-600",
-  },
-];
+import { useWalletTransactions } from "@/lib/hooks/useWallet";
+import { useUserPurchases } from "@/lib/hooks/usePurchases";
+import { useWalletBalance } from "@/lib/hooks/useWalletBalance";
+import { WalletTransaction } from "@/lib/types/wallet";
+import { Purchase } from "@/lib/types/purchse";
 
 export default function DashboardPage() {
   const [showAttention, setShowAttention] = React.useState(true);
+  const { data: walletData, isLoading: isLoadingWallet } =
+    useWalletTransactions();
+  const { data: purchasesData, isLoading: isLoadingPurchases } =
+    useUserPurchases();
+  const { data: currentBalance = 0, isLoading: isLoadingBalance } =
+    useWalletBalance();
+
+  const totalDeposit = React.useMemo(() => {
+    if (
+      !walletData ||
+      !walletData.transactions ||
+      !Array.isArray(walletData.transactions)
+    ) {
+      return 0;
+    }
+    return walletData.transactions
+      .filter((transaction: WalletTransaction) => transaction.type === "credit")
+      .reduce(
+        (acc: number, transaction: WalletTransaction) =>
+          acc + transaction.amount,
+        0,
+      );
+  }, [walletData]);
+
+  const totalInvest = React.useMemo(() => {
+    if (!purchasesData?.purchases || purchasesData.purchases.length === 0)
+      return 0;
+    return purchasesData.purchases.reduce(
+      (acc: number, purchase: Purchase) => acc + purchase.amount,
+      0,
+    );
+  }, [purchasesData]);
+
+  const totalTransactions = purchasesData?.purchases?.length || 0;
+
+  const recentDeposit = React.useMemo(() => {
+    if (!walletData || !Array.isArray(walletData.transactions)) return 0;
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    return walletData.transactions
+      .filter((transaction: WalletTransaction) => {
+        const transactionDate = new Date(transaction.createdAt);
+        return transaction.type === "credit" && transactionDate >= sevenDaysAgo;
+      })
+      .reduce(
+        (acc: number, transaction: WalletTransaction) =>
+          acc + transaction.amount,
+        0,
+      );
+  }, [walletData]);
+
+  const recentInvest = React.useMemo(() => {
+    if (!purchasesData?.purchases || purchasesData.purchases.length === 0)
+      return 0;
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    return purchasesData.purchases
+      .filter((purchase: any) => {
+        const purchaseDate = new Date(purchase.createdAt);
+        return purchaseDate >= sevenDaysAgo;
+      })
+      .reduce((acc: number, purchase: any) => acc + purchase.amount, 0);
+  }, [purchasesData]);
+
+  const stats = [
+    {
+      label: "Balance",
+      value: isLoadingBalance ? "..." : `$${currentBalance.toFixed(2)}`,
+      icon: Wallet,
+      iconClassName: "bg-blue-50 text-blue-600",
+    },
+    {
+      label: "Profit Balance",
+      value: "$74.71",
+      icon: TrendingUp,
+      iconClassName: "bg-green-50 text-green-600",
+    },
+    {
+      label: "Total Profit",
+      value: "$15,240",
+      icon: BadgeDollarSign,
+      iconClassName: "bg-indigo-50 text-indigo-600",
+    },
+    {
+      label: "Total Invest",
+      value: isLoadingPurchases ? "..." : `$${totalInvest.toFixed(2)}`,
+      icon: PieChart,
+      iconClassName: "bg-purple-50 text-purple-600",
+    },
+    {
+      label: "Current Badge",
+      value: "Hyip Victor",
+      icon: Medal,
+      iconClassName: "bg-yellow-50 text-yellow-600",
+    },
+    {
+      label: "Total Deposit",
+      value: isLoadingWallet ? "..." : `$${totalDeposit.toFixed(2)}`,
+      icon: ArrowDownToLine,
+      iconClassName: "bg-teal-50 text-teal-600",
+    },
+    {
+      label: "Total Payout",
+      value: "$57.3",
+      icon: ArrowUpFromLine,
+      iconClassName: "bg-orange-50 text-orange-600",
+    },
+    {
+      label: "Total Ticket",
+      value: "3",
+      icon: Ticket,
+      iconClassName: "bg-rose-50 text-rose-600",
+    },
+  ];
+
+  const recentActivity = [
+    {
+      label: "Support",
+      value: "0",
+      icon: Headphones,
+      iconClassName: "bg-gray-50 text-gray-600",
+    },
+    {
+      label: "Withdraw",
+      value: "$0",
+      icon: ArrowUpFromLine,
+      iconClassName: "bg-gray-50 text-gray-600",
+    },
+    {
+      label: "Invest",
+      value: isLoadingPurchases ? "..." : `$${recentInvest.toFixed(2)}`,
+      icon: Calculator,
+      iconClassName: "bg-gray-50 text-gray-600",
+    },
+    {
+      label: "Deposit",
+      value: isLoadingWallet ? "..." : `$${recentDeposit.toFixed(2)}`,
+      icon: Plus,
+      iconClassName: "bg-gray-50 text-gray-600",
+    },
+  ];
+
+  // Show full page loader if all data is loading
+  const isInitialLoading =
+    isLoadingWallet && isLoadingPurchases && isLoadingBalance;
+
+  if (isInitialLoading) {
+    return (
+      <div className="space-y-8 pb-12">
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold tracking-tight text-white">
+            Dashboard
+          </h1>
+        </div>
+        <div className="flex items-center justify-center py-24">
+          <Loader2 className="h-8 w-8 animate-spin text-[#D4AF37] mr-3" />
+          <span className="text-gray-400 text-lg">Loading dashboard...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8 pb-12">
@@ -109,31 +200,6 @@ export default function DashboardPage() {
           Dashboard
         </h1>
       </div>
-
-      {/* Attention Alert */}
-      {showAttention && (
-        <div className="relative bg-[#0F1C2E]/60 backdrop-blur-xl border border-[#D4AF37]/20 rounded-xl p-6 flex flex-col md:flex-row items-center gap-6 shadow-2xl">
-          <div className="p-4 bg-[#D4AF37]/10 rounded-full">
-            <Megaphone className="h-8 w-8 text-[#D4AF37]" />
-          </div>
-          <div className="flex-1 text-center md:text-left">
-            <h3 className="text-xl font-bold mb-1 text-white">Attention!</h3>
-            <p className="text-gray-400">
-              Please allow your browser to get instant push notification. Allow
-              it from notification setting.
-            </p>
-          </div>
-          <Button className="bg-[#4169E1] hover:bg-[#3152C3] text-white px-8 py-6 rounded-xl font-semibold shadow-lg shadow-blue-500/20">
-            Allow me
-          </Button>
-          <button
-            onClick={() => setShowAttention(false)}
-            className="absolute top-4 right-4 text-gray-400 hover:text-white"
-          >
-            <X className="h-5 w-5" />
-          </button>
-        </div>
-      )}
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -160,7 +226,7 @@ export default function DashboardPage() {
               <div
                 className={cn(
                   activity.iconClassName,
-                  "p-3 rounded-lg bg-opacity-10"
+                  "p-3 rounded-lg bg-opacity-10",
                 )}
               >
                 <activity.icon className="h-5 w-5" />

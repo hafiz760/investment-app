@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { authApi } from "../api/auth";
+import { authApi } from "../api/auth.api";
 import {
   RegisterRequest,
   RegisterResponse,
@@ -20,7 +20,6 @@ import {
   ResetPasswordResponse,
   UpdatePasswordRequest,
   UpdatePasswordResponse,
-  ApiError,
   ResendOtpRequest,
   KycResponse,
   GetUsersResponse,
@@ -29,6 +28,7 @@ import {
   UpdateKycStatusResponse,
   ApiRole,
 } from "../types/auth";
+import { ApiError } from "../types/error";
 import { useAppDispatch } from "../store/hooks";
 import { setAuth, clearAuth } from "../store/slices/authSlice";
 import { setAuthCookie, clearAuthCookie } from "../utils/cookies";
@@ -87,13 +87,19 @@ export const useVerifyOtp = (): UseMutationResult<
   return useMutation<AuthResponse, ApiError, VerifyOtpRequest>({
     mutationFn: authApi.verifyOtp,
     onSuccess: (data) => {
-      dispatch(setAuth({ user: data.user, accessToken: data.access_token }));
+      // Ensure user object has permissions array
+      const userWithPermissions = {
+        ...data.user,
+        permissions: data.user?.permissions || [],
+      };
+      
+      dispatch(setAuth({ user: userWithPermissions, accessToken: data.access_token }));
       setAuthCookie(data.access_token);
 
       toast.success("Email verified successfully!", {
-        description: "Welcome to Plouton AI",
+        description: "Welcome to ROI",
       });
-      router.push("/");
+      router.push("/user/dashboard");
     },
     onError: (error) => {
       toast.error("Verification failed", {
@@ -176,7 +182,7 @@ export const useForgotPassword = (): UseMutationResult<
       });
       // Redirect to reset password page with email as query param
       router.push(
-        `/reset-password?email=${encodeURIComponent(variables.email)}`
+        `/reset-password?email=${encodeURIComponent(variables.email)}`,
       );
     },
   });

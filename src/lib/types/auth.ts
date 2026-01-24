@@ -128,11 +128,7 @@ export interface KycResponse {
   message: string;
 }
 
-export interface ApiError {
-  statusCode: number;
-  message: string;
-  error: string;
-}
+
 
 export interface UpdateKycStatusRequest {
   kycApproved: boolean;
@@ -140,32 +136,4 @@ export interface UpdateKycStatusRequest {
 
 export interface UpdateKycStatusResponse {
   message: string;
-}
-export interface InvestmentPlan {
-  id: string;
-  name: string;
-  minInvestment: number;
-  maxInvestment: number;
-  monthlyReturnMin: number;
-  monthlyReturnMax: number;
-  annualGrowthMin: number;
-  annualGrowthMax: number;
-  threeYearGrowthMin: number;
-  threeYearGrowthMax: number;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface CreatePlanRequest {
-  name: string;
-  minInvestment: number;
-  maxInvestment: number;
-  monthlyReturnMin: number;
-  monthlyReturnMax: number;
-  annualGrowthMin: number;
-  annualGrowthMax: number;
-  threeYearGrowthMin: number;
-  threeYearGrowthMax: number;
-  isActive: boolean;
 }

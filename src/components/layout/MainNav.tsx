@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { useAppSelector } from "@/lib/store/hooks";
 
 const mainLinks = [
   { label: "Home", href: "/" },
@@ -17,27 +18,35 @@ const mainLinks = [
 export function MainNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
+  const { isAuthenticated, user } = useAppSelector((state) => state.auth);
+  console.log(isAuthenticated, "isAuth");
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
     const [path, hash] = href.split("#");
-    
-    // Normalize paths: remove trailing slashes and ensure absolute path
-    const normalizedTarget = path === "" ? pathname : (path.startsWith("/") ? path : `/${path}`).replace(/\/$/, "");
+
+    const normalizedTarget =
+      path === ""
+        ? pathname
+        : (path.startsWith("/") ? path : `/${path}`).replace(/\/$/, "");
     const normalizedCurrent = pathname.replace(/\/$/, "");
-    
+
     const isSamePage = normalizedTarget === normalizedCurrent;
 
     if (isSamePage && hash) {
       e.preventDefault();
       const element = document.getElementById(hash);
-      
+
       // Close menus immediately
       if (mobileOpen) setMobileOpen(false);
 
       if (element) {
         setTimeout(() => {
           const yOffset = -100;
-          const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          const y =
+            element.getBoundingClientRect().top + window.pageYOffset + yOffset;
           window.scrollTo({ top: y, behavior: "smooth" });
           window.history.pushState(null, "", href);
         }, 100);
@@ -56,7 +65,8 @@ export function MainNav() {
       if (element) {
         setTimeout(() => {
           const yOffset = -100;
-          const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          const y =
+            element.getBoundingClientRect().top + window.pageYOffset + yOffset;
           window.scrollTo({ top: y, behavior: "smooth" });
         }, 500); // Wait for page content to settle
       }
@@ -67,8 +77,8 @@ export function MainNav() {
     <header className="section-padding sticky top-0 z-40">
       <div className="container mx-auto pt-4">
         <div className="hidden lg:flex items-center justify-between rounded-full border border-[#D4AF37]/30 bg-[#0F1C2E]/60 backdrop-blur-xl px-6 py-3 shadow-[0_0_20px_rgba(212,175,55,0.1)]">
-          <Link 
-            href="/#hero" 
+          <Link
+            href="/#hero"
             className="flex items-center gap-2.5"
             onClick={(e) => handleNavClick(e, "/#hero")}
           >
@@ -94,21 +104,31 @@ export function MainNav() {
             ))}
           </nav>
 
-          {/* CTA */}
-          <Link href="/login">
-            <Button
-              variant="outline"
-              className="rounded-full border-2 border-[#D4AF37] px-7 py-2 h-auto bg-transparent text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0F1C2E] font-medium text-[15px]"
-            >
-              Invest Now
-            </Button>
-          </Link>
+          {isAuthenticated ? (
+            <Link href="/user/dashboard">
+              <Button
+                variant="outline"
+                className="rounded-full border-2 border-[#D4AF37] px-7 py-2 h-auto bg-transparent text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0F1C2E] font-medium text-[15px]"
+              >
+                Dashboard
+              </Button>
+            </Link>
+          ) : (
+            <Link href="/login">
+              <Button
+                variant="outline"
+                className="rounded-full border-2 border-[#D4AF37] px-7 py-2 h-auto bg-transparent text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0F1C2E] font-medium text-[15px]"
+              >
+                Invest Now
+              </Button>
+            </Link>
+          )}
         </div>
 
         {/* MOBILE BAR */}
         <div className="flex lg:hidden items-center justify-between rounded-full border border-[#D4AF37]/30 bg-[#0F1C2E]/60 backdrop-blur-xl px-4 py-3">
-          <Link 
-            href="/#hero" 
+          <Link
+            href="/#hero"
             className="flex items-center gap-2"
             onClick={(e) => handleNavClick(e, "/#hero")}
           >

@@ -69,7 +69,9 @@ export function AuthGuard({ children, requiredRole }: AuthGuardProps) {
     return (
       <div className="min-h-screen bg-[#020617] flex flex-col items-center justify-center gap-4 text-[#D4AF37]">
         <Loader2 className="h-10 w-10 animate-spin" />
-        <p className="text-sm font-medium animate-pulse">Checking authorization...</p>
+        <p className="text-sm font-medium animate-pulse">
+          Checking authorization...
+        </p>
       </div>
     );
   }
