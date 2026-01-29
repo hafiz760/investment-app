@@ -1,18 +1,8 @@
 "use client";
 
 import React from "react";
-import {
-  Bell,
-  Search,
-  Menu,
-  Sun,
-  User,
-  LogOut,
-  Settings,
-  ChevronRight,
-} from "lucide-react";
+import { Bell, Menu, User, LogOut, Settings, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,6 +12,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useLogout } from "@/lib/hooks/useAuth";
+import { useAppSelector } from "@/lib/store/hooks";
+import { useUserProfile } from "@/lib/hooks/useProfile";
+import Image from "next/image";
+import Link from "next/link";
 
 export function SuperAdminNavbar({
   setSidebarOpen,
@@ -31,6 +25,18 @@ export function SuperAdminNavbar({
   sidebarOpen: boolean;
 }) {
   const logout = useLogout();
+  const { user } = useAppSelector((state) => state.auth);
+  const userId = user?.id;
+
+  // Fetch user profile
+  const { data: userProfile } = useUserProfile(userId as string);
+
+  // Get initials for avatar
+  const getInitials = () => {
+    const firstName = userProfile?.data?.firstName || "";
+    const lastName = userProfile?.data?.lastName || "";
+    return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase() || "A";
+  };
 
   return (
     <header className="h-16 border-b border-[#D4AF37]/20 bg-[#0F1C2E]/60 backdrop-blur-xl flex items-center justify-between px-4 lg:px-8 sticky top-0 z-50">
@@ -44,7 +50,7 @@ export function SuperAdminNavbar({
           <Menu className="h-5 w-5" />
         </Button>
 
-        {/* Breadcrumb - Demo */}
+        {/* Breadcrumb */}
         <div className="hidden sm:flex items-center gap-2 text-sm">
           <span className="text-gray-500">Super Admin</span>
           <ChevronRight className="h-3 w-3 text-gray-600" />
@@ -53,15 +59,7 @@ export function SuperAdminNavbar({
       </div>
 
       <div className="flex items-center gap-3 lg:gap-6">
-        {/* Search */}
-        <div className="hidden md:flex items-center relative w-64 lg:w-80">
-          <Search className="absolute left-3 h-4 w-4 text-gray-500" />
-          <Input
-            placeholder="Search records..."
-            className="pl-10 bg-white/5 border-[#D4AF37]/10 h-10 text-sm text-white focus:border-[#D4AF37]/50 focus:ring-0"
-          />
-        </div>
-
+        {/* Notification Bell */}
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
@@ -71,52 +69,90 @@ export function SuperAdminNavbar({
             <Bell className="h-5 w-5" />
             <span className="absolute top-2 right-2 w-2 h-2 bg-[#D4AF37] rounded-full border border-[#0F1C2E]" />
           </Button>
-
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-gray-400 hover:text-white"
-          >
-            <Sun className="h-5 w-5" />
-          </Button>
         </div>
 
         <div className="h-8 w-px bg-white/10 hidden sm:block" />
 
+        {/* User Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
               className="flex items-center gap-3 px-2 hover:bg-white/5 h-10"
             >
-              <div className="w-8 h-8 rounded-lg bg-[#D4AF37] flex items-center justify-center text-[#0F1C2E] font-bold">
-                A
+              {/* Avatar */}
+              <div className="w-8 h-8 rounded-lg overflow-hidden bg-[#D4AF37] flex items-center justify-center text-[#0F1C2E] font-bold">
+                {userProfile?.data?.profilePic ? (
+                  <Image
+                    src={userProfile.data.profilePic}
+                    alt="Profile"
+                    width={32}
+                    height={32}
+                    className="object-cover w-full h-full"
+                  />
+                ) : (
+                  <span>{getInitials()}</span>
+                )}
               </div>
+
+              {/* User Info */}
               <div className="hidden lg:flex flex-col items-start min-w-0">
                 <span className="text-sm font-semibold text-white truncate">
-                  Administrator
+                  {userProfile?.data?.username}
                 </span>
                 <span className="text-[10px] text-[#D4AF37] font-medium leading-none">
-                  Super Admin
+                  {userProfile?.data?.roleName || "Super Admin"}
                 </span>
               </div>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
-            className="w-56 bg-[#0F1C2E] border-[#D4AF37]/20 text-white shadow-2xl"
+            className="w-64 bg-[#0F1C2E] border-[#D4AF37]/20 text-white shadow-2xl"
           >
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            {/* User Info Header */}
+            <DropdownMenuLabel className="font-normal">
+              <div className="flex items-center gap-3 py-2">
+                <div className="w-12 h-12 rounded-lg bg-white/10 overflow-hidden flex items-center justify-center">
+                  {userProfile?.data?.profilePic ? (
+                    <Image
+                      src={userProfile.data.profilePic}
+                      alt="Profile"
+                      width={48}
+                      height={48}
+                      className="object-cover w-full h-full"
+                    />
+                  ) : (
+                    <User className="h-6 w-6 text-white" />
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-white truncate">
+                    {userProfile?.data?.firstName} {userProfile?.data?.lastName}
+                  </p>
+                  <p className="text-xs text-gray-400 truncate">
+                    @{userProfile?.data?.email}
+                  </p>
+                  <p className="text-[10px] text-[#D4AF37] font-medium mt-1">
+                    {userProfile?.data?.roleName || "Super Admin"}
+                  </p>
+                </div>
+              </div>
+            </DropdownMenuLabel>
+
             <DropdownMenuSeparator className="bg-white/5" />
-            <DropdownMenuItem className="focus:bg-white/5 focus:text-[#D4AF37] cursor-pointer">
-              <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
+            <DropdownMenuItem asChild>
+              <Link
+                href="/super-admin/settings"
+                className="flex w-full items-center cursor-pointer focus:bg-white/5 focus:text-white"
+              >
+                <Settings className="mr-2 h-4 w-4" />
+                <span>Settings</span>
+              </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem className="focus:bg-white/5 focus:text-[#D4AF37] cursor-pointer">
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Settings</span>
-            </DropdownMenuItem>
+
             <DropdownMenuSeparator className="bg-white/5" />
+
             <DropdownMenuItem
               className="text-red-400 focus:text-red-500 focus:bg-red-500/5 cursor-pointer"
               onClick={() => logout()}

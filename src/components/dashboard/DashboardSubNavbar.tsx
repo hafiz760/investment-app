@@ -56,7 +56,6 @@ const links = [
     href: "/user/more",
     icon: Grid2X2,
     dropdown: [
-      { label: "Transactions", href: "/user/transactions" },
       { label: "Support Ticket", href: "/user/support" },
       { label: "Two Factor", href: "/user/profile/2fa" },
       { label: "Notification", href: "/user/profile/notifications" },

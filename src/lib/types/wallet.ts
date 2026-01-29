@@ -40,3 +40,12 @@ export interface WalletTransactions {
   transactions: WalletTransaction[];
   pagination: Pagination;
 }
+
+export interface WalletDetails {
+  id: string;
+  balance: number;
+  currency: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+}

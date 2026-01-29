@@ -6,6 +6,7 @@ import {
   DepositResponse,
   WalletTransactions,
   GetWalletTransactionsQuery,
+  WalletDetails,
 } from "../types/wallet";
 import { ApiError } from "../types/error";
 import { walletApi } from "../api/walletapi";
@@ -30,5 +31,12 @@ export function useWalletTransactions(query?: GetWalletTransactionsQuery) {
   return useQuery<WalletTransactions, ApiError>({
     queryKey: ["wallet-transactions", query],
     queryFn: () => walletApi.getUserWallet(query),
+  });
+}
+
+export function useWalletDetails() {
+  return useQuery<WalletDetails, ApiError>({
+    queryKey: ["wallet-details"],
+    queryFn: () => walletApi.getWalletDetails(),
   });
 }

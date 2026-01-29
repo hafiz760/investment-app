@@ -15,39 +15,24 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Loader2 } from "lucide-react";
+import { Loader2, Filter } from "lucide-react";
 import { DataTableFilter } from "@/components/dashboard/DataTableFilter";
 import { DataTablePagination } from "@/components/ui/pagination";
 import { useWalletTransactions } from "@/lib/hooks/useWallet";
-import { GetWalletTransactionsQuery } from "@/lib/types/wallet";
+import {
+  GetWalletTransactionsQuery,
+  WalletTransaction,
+} from "@/lib/types/wallet";
 import { useState } from "react";
-
-interface WalletTransaction {
-  id: string;
-  walletId: string;
-  amount: number;
-  type: "credit" | "debit";
-  status: "completed" | "pending" | "failed";
-  description: string;
-  referenceId: string;
-  referenceType: string;
-  metadata: {
-    type: string;
-    userId: string;
-    sessionId: string;
-    paymentIntentId: string;
-  };
-  createdAt: string;
-  updatedAt: string;
-}
 
 export default function DepositHistoryPage() {
   const [query, setQuery] = useState<GetWalletTransactionsQuery>({
-    limit: 50,
+    limit: 10,
     offset: 0,
   });
   const [currentPage, setCurrentPage] = useState(1);
   const { data, isLoading, error } = useWalletTransactions(query);
+  console.log(data);
   const [selectedTransaction, setSelectedTransaction] =
     useState<WalletTransaction | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -79,6 +64,21 @@ export default function DepositHistoryPage() {
     );
   };
 
+  const getTypeBadge = (type: string) => {
+    const typeColors = {
+      credit: "bg-blue-500/10 text-blue-500 border-blue-500/20",
+      debit: "bg-orange-500/10 text-orange-500 border-orange-500/20",
+    };
+
+    return (
+      <Badge
+        className={`${typeColors[type as keyof typeof typeColors] || "bg-gray-500/10 text-gray-500"}`}
+      >
+        {type.toUpperCase()}
+      </Badge>
+    );
+  };
+
   const handleRowClick = (transaction: WalletTransaction) => {
     setSelectedTransaction(transaction);
     setIsDialogOpen(true);
@@ -88,9 +88,21 @@ export default function DepositHistoryPage() {
     setCurrentPage(page);
     setQuery((prev) => ({
       ...prev,
-      offset: (page - 1) * 50,
+      offset: (page - 1) * (prev.limit || 50),
     }));
   };
+
+  const handleFilterApply = (filters: GetWalletTransactionsQuery) => {
+    setCurrentPage(1); // Reset to first page when filters change
+    setQuery({
+      ...filters,
+      offset: 0, // Reset offset
+    });
+  };
+
+  // Check if any filters are active
+  const hasActiveFilters =
+    query.type || query.status || query.startDate || query.endDate;
 
   if (isLoading) {
     return (
@@ -109,22 +121,39 @@ export default function DepositHistoryPage() {
     );
   }
 
+  const itemsPerPage = data?.pagination?.limit || query.limit || 50;
+  const totalPages = data?.pagination
+    ? Math.ceil(data.pagination.total / (data.pagination.limit || itemsPerPage))
+    : 1;
+
   return (
     <div className="space-y-8 pb-12">
       <div className="flex flex-col gap-1">
         <div className="flex items-center gap-2 text-sm text-gray-400">
           <span>Dashboard</span>
           <span>/</span>
-          <span className="text-[#D4AF37] font-medium">Payment History</span>
+          <span className="text-[#D4AF37] font-medium">Deposit History</span>
         </div>
         <h1 className="text-3xl font-bold tracking-tight text-white">
-          Payment History
+          Deposit History
         </h1>
       </div>
 
       <div className="bg-[#0F1C2E]/60 backdrop-blur-xl border border-[#D4AF37]/20 rounded-xl shadow-2xl overflow-hidden">
-        <div className="p-4 flex justify-end border-b border-white/10">
-          <DataTableFilter title="Deposit Filter" />
+        <div className="p-4 flex justify-between items-center border-b border-white/10">
+          <div className="flex items-center gap-2">
+            {hasActiveFilters && (
+              <Badge className="bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/20">
+                <Filter className="h-3 w-3 mr-1" />
+                Filters Active
+              </Badge>
+            )}
+          </div>
+          <DataTableFilter
+            title="Transaction Filters"
+            onFilterApply={handleFilterApply}
+            currentFilters={query}
+          />
         </div>
 
         <Table>
@@ -132,9 +161,9 @@ export default function DepositHistoryPage() {
             <TableRow className="bg-white/5 border-white/10 hover:bg-white/5">
               <TableHead className="text-gray-300">SL</TableHead>
               <TableHead className="text-gray-300">TRANSACTION ID</TableHead>
+              <TableHead className="text-gray-300">TYPE</TableHead>
               <TableHead className="text-gray-300">METHOD</TableHead>
               <TableHead className="text-gray-300">AMOUNT</TableHead>
-              <TableHead className="text-gray-300">CHARGE</TableHead>
               <TableHead className="text-gray-300">STATUS</TableHead>
               <TableHead className="text-gray-300">CREATED TIME</TableHead>
             </TableRow>
@@ -148,10 +177,13 @@ export default function DepositHistoryPage() {
                     className="border-white/10 hover:bg-white/5 cursor-pointer transition-colors"
                     onClick={() => handleRowClick(transaction)}
                   >
-                    <TableCell className="text-gray-300">{index + 1}</TableCell>
+                    <TableCell className="text-gray-300">
+                      {(query.offset || 0) + index + 1}
+                    </TableCell>
                     <TableCell className="text-gray-300 font-mono text-xs">
                       {transaction.id.substring(0, 8)}...
                     </TableCell>
+                    <TableCell>{getTypeBadge(transaction.type)}</TableCell>
                     <TableCell className="text-gray-300">
                       {transaction.referenceType
                         .replace("_", " ")
@@ -160,7 +192,6 @@ export default function DepositHistoryPage() {
                     <TableCell className="text-[#D4AF37] font-semibold">
                       ${transaction.amount.toFixed(2)}
                     </TableCell>
-                    <TableCell className="text-gray-300">$0.00</TableCell>
                     <TableCell>{getStatusBadge(transaction.status)}</TableCell>
                     <TableCell className="text-gray-300">
                       {formatDate(transaction.createdAt)}
@@ -175,25 +206,25 @@ export default function DepositHistoryPage() {
                   className="text-center py-10 text-gray-400"
                 >
                   No transactions found
+                  {hasActiveFilters && (
+                    <p className="text-sm mt-2">Try adjusting your filters</p>
+                  )}
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-
-        {/* Pagination */}
-        {data?.pagination && (
+        {data?.pagination && data.pagination.total > 0 && (
           <DataTablePagination
             currentPage={currentPage}
-            totalPages={Math.ceil(data.pagination.total / 50)}
+            totalPages={totalPages}
             onPageChange={handlePageChange}
             totalItems={data.pagination.total}
-            itemsPerPage={50}
+            itemsPerPage={itemsPerPage}
           />
         )}
       </div>
 
-      {/* Transaction Detail Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="bg-[#0F1C2E] border-[#D4AF37]/20 text-white max-w-2xl">
           <DialogHeader>
@@ -231,9 +262,7 @@ export default function DepositHistoryPage() {
 
                 <div className="space-y-1">
                   <p className="text-sm text-gray-400">Type</p>
-                  <p className="text-white uppercase">
-                    {selectedTransaction.type}
-                  </p>
+                  <div>{getTypeBadge(selectedTransaction.type)}</div>
                 </div>
 
                 <div className="space-y-1">
@@ -276,35 +305,35 @@ export default function DepositHistoryPage() {
                   </p>
                 </div>
               </div>
+              {selectedTransaction.metadata && (
+                <div className="pt-4 border-t border-white/10">
+                  <p className="text-sm text-gray-400 mb-3 font-semibold">
+                    Payment Metadata
+                  </p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <p className="text-sm text-gray-400">User ID</p>
+                      <p className="text-white font-mono text-sm break-all">
+                        {selectedTransaction.metadata.userId}
+                      </p>
+                    </div>
 
-              {/* Metadata Section */}
-              <div className="pt-4 border-t border-white/10">
-                <p className="text-sm text-gray-400 mb-3 font-semibold">
-                  Payment Metadata
-                </p>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <p className="text-sm text-gray-400">User ID</p>
-                    <p className="text-white font-mono text-sm break-all">
-                      {selectedTransaction.metadata.userId}
-                    </p>
-                  </div>
+                    <div className="space-y-1">
+                      <p className="text-sm text-gray-400">Session ID</p>
+                      <p className="text-white font-mono text-sm break-all">
+                        {selectedTransaction.metadata.sessionId}
+                      </p>
+                    </div>
 
-                  <div className="space-y-1">
-                    <p className="text-sm text-gray-400">Session ID</p>
-                    <p className="text-white font-mono text-sm break-all">
-                      {selectedTransaction.metadata.sessionId}
-                    </p>
-                  </div>
-
-                  <div className="space-y-1 col-span-2">
-                    <p className="text-sm text-gray-400">Payment Intent ID</p>
-                    <p className="text-white font-mono text-sm break-all">
-                      {selectedTransaction.metadata.paymentIntentId}
-                    </p>
+                    <div className="space-y-1 col-span-2">
+                      <p className="text-sm text-gray-400">Payment Intent ID</p>
+                      <p className="text-white font-mono text-sm break-all">
+                        {selectedTransaction.metadata.paymentIntentId}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           )}
         </DialogContent>

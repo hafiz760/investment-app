@@ -28,7 +28,7 @@ export default function WishlistPage() {
 
       <div className="bg-[#0F1C2E]/60 backdrop-blur-xl border border-[#D4AF37]/20 rounded-xl shadow-2xl overflow-hidden">
         <div className="p-4 flex justify-end border-b border-white/10">
-          <DataTableFilter title="Wishlist Filter" />
+          {/* <DataTableFilter title="Wishlist Filter" /> */}
         </div>
         <Table>
           <TableHeader>

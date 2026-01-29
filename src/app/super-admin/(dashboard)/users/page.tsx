@@ -38,7 +38,7 @@ const columns: ColumnDef<User>[] = [
     header: "Role",
     cell: ({ row }) => (
       <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20">
-        {row.original.userType}
+        {row.original.roleName}
       </span>
     ),
   },
@@ -53,7 +53,7 @@ const columns: ColumnDef<User>[] = [
             "px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider",
             isApproved
               ? "bg-green-500/10 text-green-400 border border-green-500/20"
-              : "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"
+              : "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20",
           )}
         >
           {isApproved ? "Approved" : "Pending"}
@@ -106,6 +106,7 @@ const columns: ColumnDef<User>[] = [
 
 export default function AdminUsersPage() {
   const { data: response, isLoading } = useUsers();
+  console.log(response);
   const users = response?.data || [];
 
   const router = useRouter();

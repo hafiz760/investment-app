@@ -21,9 +21,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { cn } from "@/lib/utils";
-import { useWalletTransactions } from "@/lib/hooks/useWallet";
+import { useWalletTransactions, useWalletDetails } from "@/lib/hooks/useWallet";
 import { useUserPurchases } from "@/lib/hooks/usePurchases";
-import { useWalletBalance } from "@/lib/hooks/useWalletBalance";
 import { WalletTransaction } from "@/lib/types/wallet";
 import { Purchase } from "@/lib/types/purchse";
 
@@ -31,10 +30,10 @@ export default function DashboardPage() {
   const [showAttention, setShowAttention] = React.useState(true);
   const { data: walletData, isLoading: isLoadingWallet } =
     useWalletTransactions();
+  const { data: walletDetails, isLoading: isLoadingWalletDetails } =
+    useWalletDetails();
   const { data: purchasesData, isLoading: isLoadingPurchases } =
     useUserPurchases();
-  const { data: currentBalance = 0, isLoading: isLoadingBalance } =
-    useWalletBalance();
 
   const totalDeposit = React.useMemo(() => {
     if (
@@ -98,51 +97,59 @@ export default function DashboardPage() {
   const stats = [
     {
       label: "Balance",
-      value: isLoadingBalance ? "..." : `$${currentBalance.toFixed(2)}`,
+      value: `$${walletDetails?.balance.toFixed(2) ?? "0.00"}`,
       icon: Wallet,
       iconClassName: "bg-blue-50 text-blue-600",
+      isLoading: isLoadingWalletDetails,
     },
     {
       label: "Profit Balance",
       value: "$74.71",
       icon: TrendingUp,
       iconClassName: "bg-green-50 text-green-600",
+      isLoading: false,
     },
     {
       label: "Total Profit",
       value: "$15,240",
       icon: BadgeDollarSign,
       iconClassName: "bg-indigo-50 text-indigo-600",
+      isLoading: false,
     },
     {
       label: "Total Invest",
-      value: isLoadingPurchases ? "..." : `$${totalInvest.toFixed(2)}`,
+      value: `$${totalInvest.toFixed(2)}`,
       icon: PieChart,
       iconClassName: "bg-purple-50 text-purple-600",
+      isLoading: isLoadingPurchases,
     },
     {
       label: "Current Badge",
       value: "Hyip Victor",
       icon: Medal,
       iconClassName: "bg-yellow-50 text-yellow-600",
+      isLoading: false,
     },
     {
       label: "Total Deposit",
-      value: isLoadingWallet ? "..." : `$${totalDeposit.toFixed(2)}`,
+      value: `$${totalDeposit.toFixed(2)}`,
       icon: ArrowDownToLine,
       iconClassName: "bg-teal-50 text-teal-600",
+      isLoading: isLoadingWallet,
     },
     {
       label: "Total Payout",
       value: "$57.3",
       icon: ArrowUpFromLine,
       iconClassName: "bg-orange-50 text-orange-600",
+      isLoading: false,
     },
     {
       label: "Total Ticket",
       value: "3",
       icon: Ticket,
       iconClassName: "bg-rose-50 text-rose-600",
+      isLoading: false,
     },
   ];
 
@@ -152,46 +159,30 @@ export default function DashboardPage() {
       value: "0",
       icon: Headphones,
       iconClassName: "bg-gray-50 text-gray-600",
+      isLoading: false,
     },
     {
       label: "Withdraw",
       value: "$0",
       icon: ArrowUpFromLine,
       iconClassName: "bg-gray-50 text-gray-600",
+      isLoading: false,
     },
     {
       label: "Invest",
-      value: isLoadingPurchases ? "..." : `$${recentInvest.toFixed(2)}`,
+      value: `$${recentInvest.toFixed(2)}`,
       icon: Calculator,
       iconClassName: "bg-gray-50 text-gray-600",
+      isLoading: isLoadingPurchases,
     },
     {
       label: "Deposit",
-      value: isLoadingWallet ? "..." : `$${recentDeposit.toFixed(2)}`,
+      value: `$${recentDeposit.toFixed(2)}`,
       icon: Plus,
       iconClassName: "bg-gray-50 text-gray-600",
+      isLoading: isLoadingWallet,
     },
   ];
-
-  // Show full page loader if all data is loading
-  const isInitialLoading =
-    isLoadingWallet && isLoadingPurchases && isLoadingBalance;
-
-  if (isInitialLoading) {
-    return (
-      <div className="space-y-8 pb-12">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold tracking-tight text-white">
-            Dashboard
-          </h1>
-        </div>
-        <div className="flex items-center justify-center py-24">
-          <Loader2 className="h-8 w-8 animate-spin text-[#D4AF37] mr-3" />
-          <span className="text-gray-400 text-lg">Loading dashboard...</span>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-8 pb-12">
@@ -231,11 +222,20 @@ export default function DashboardPage() {
               >
                 <activity.icon className="h-5 w-5" />
               </div>
-              <div>
-                <p className="text-2xl font-bold text-white">
-                  {activity.value}
-                </p>
-                <p className="text-sm text-gray-400">{activity.label}</p>
+              <div className="flex-1">
+                {activity.isLoading ? (
+                  <div className="flex items-center gap-2">
+                    <Loader2 className="h-5 w-5 animate-spin text-[#D4AF37]" />
+                    <p className="text-sm text-gray-400">Loading...</p>
+                  </div>
+                ) : (
+                  <>
+                    <p className="text-2xl font-bold text-white">
+                      {activity.value}
+                    </p>
+                    <p className="text-sm text-gray-400">{activity.label}</p>
+                  </>
+                )}
               </div>
             </div>
           ))}

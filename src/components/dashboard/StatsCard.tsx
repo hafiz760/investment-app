@@ -3,8 +3,7 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-
-import { LucideIcon } from "lucide-react";
+import { LucideIcon, Loader2 } from "lucide-react";
 
 interface StatsCardProps {
   label?: string;
@@ -17,6 +16,7 @@ interface StatsCardProps {
   };
   className?: string;
   iconClassName?: string;
+  isLoading?: boolean;
 }
 
 export function StatsCard({
@@ -27,6 +27,7 @@ export function StatsCard({
   trend,
   className,
   iconClassName,
+  isLoading = false,
 }: {
   label?: string;
   title?: string;
@@ -38,6 +39,7 @@ export function StatsCard({
   };
   className?: string;
   iconClassName?: string;
+  isLoading?: boolean;
 }) {
   const displayLabel = title || label;
 
@@ -56,7 +58,7 @@ export function StatsCard({
     <Card
       className={cn(
         "overflow-hidden bg-[#0F1C2E]/60 backdrop-blur-xl border border-[#D4AF37]/20 shadow-2xl hover:border-[#D4AF37]/40 transition-all group",
-        className
+        className,
       )}
     >
       <CardContent className="p-6">
@@ -64,7 +66,7 @@ export function StatsCard({
           <div
             className={cn(
               "p-3 rounded-xl transition-all group-hover:scale-110",
-              iconClassName || "bg-[#D4AF37]/10 text-[#D4AF37]"
+              iconClassName || "bg-[#D4AF37]/10 text-[#D4AF37]",
             )}
           >
             {typeof IconOrElement === "function" ||
@@ -76,13 +78,13 @@ export function StatsCard({
                 })
               : IconOrElement}
           </div>
-          {trend && (
+          {trend && !isLoading && (
             <div
               className={cn(
                 "flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full",
                 trend.isPositive
                   ? "bg-green-500/10 text-green-400"
-                  : "bg-red-500/10 text-red-400"
+                  : "bg-red-500/10 text-red-400",
               )}
             >
               <span className="text-[10px] tracking-wider uppercase font-bold">
@@ -92,12 +94,21 @@ export function StatsCard({
           )}
         </div>
         <div className="flex flex-col">
-          <p className="text-2xl font-bold tracking-tight text-white">
-            {value}
-          </p>
-          <span className="text-sm font-medium text-gray-400">
-            {displayLabel}
-          </span>
+          {isLoading ? (
+            <div className="flex items-center gap-3">
+              <Loader2 className="h-5 w-5 animate-spin text-[#D4AF37]" />
+              <span className="text-sm text-gray-400">Loading...</span>
+            </div>
+          ) : (
+            <>
+              <p className="text-2xl font-bold tracking-tight text-white">
+                {value}
+              </p>
+              <span className="text-sm font-medium text-gray-400">
+                {displayLabel}
+              </span>
+            </>
+          )}
         </div>
       </CardContent>
     </Card>

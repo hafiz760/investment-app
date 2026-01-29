@@ -9,7 +9,7 @@ export interface Purchase {
   stripeSessionId: string;
   amount: number;
   currency: string;
-  status: "pending" | "completed" | "failed";
+  status: "pending" | "completed" | "failed" | "refunded";
   isActive: boolean;
   metadata: Record<string, any> | null;
   createdAt: string;
@@ -17,7 +17,7 @@ export interface Purchase {
 }
 
 export interface GetPurchasesQuery {
-  status?: "pending" | "completed" | "failed";
+  status?: "pending" | "completed" | "failed" | "refunded";
   limit?: number;
   offset?: number;
   startDate?: string;

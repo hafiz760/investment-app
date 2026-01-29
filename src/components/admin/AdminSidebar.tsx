@@ -34,20 +34,41 @@ export function AdminSidebar({
 }) {
   const pathname = usePathname();
   const { user } = useAppSelector((state) => state.auth);
+  console.log(user);
 
-  const hasPermission = (moduleName: string, action: "read" | "write" | "update" | "delete") => {
+  const hasPermission = (
+    moduleName: string,
+    action: "read" | "write" | "update" | "delete",
+  ) => {
     if (user?.roleName === "Super Admin") return true;
-    const permission = user?.permissions?.find(p => p.moduleName === moduleName);
+    const permission = user?.permissions?.find(
+      (p) => p.moduleName === moduleName,
+    );
     return permission ? permission[action] : false;
   };
 
   const filteredLinks = [
     { label: "Dashboard", href: "/admin", icon: LayoutDashboard, show: true },
-    { label: "Users", href: "/admin/users", icon: Users, show: hasPermission("User", "read") },
-    { label: "Investment Plans", href: "/admin/plans", icon: TrendingUp, show: hasPermission("Plan", "read") },
-    { label: "Payment History", href: "/admin/payments", icon: History, show: hasPermission("Payment", "read") },
+    {
+      label: "Users",
+      href: "/admin/users",
+      icon: Users,
+      show: hasPermission("User", "read"),
+    },
+    {
+      label: "Investment Plans",
+      href: "/admin/plans",
+      icon: TrendingUp,
+      show: hasPermission("Plan", "read"),
+    },
+    {
+      label: "Payment History",
+      href: "/admin/payments",
+      icon: History,
+      show: hasPermission("Payment", "read"),
+    },
     { label: "Settings", href: "/admin/settings", icon: Settings, show: true },
-  ].filter(link => link.show);
+  ].filter((link) => link.show);
 
   return (
     <>
@@ -65,21 +86,21 @@ export function AdminSidebar({
           "fixed top-0 left-0 h-screen bg-[#0F1C2E] border-r border-[#D4AF37]/20 z-50 transition-all duration-300 ease-in-out lg:sticky",
           open
             ? "w-72 translate-x-0"
-            : "w-0 -translate-x-full lg:w-20 lg:translate-x-0"
+            : "w-0 -translate-x-full lg:w-20 lg:translate-x-0",
         )}
       >
         <div className="flex flex-col h-full overflow-hidden">
           {/* Logo Section */}
           <div className="h-16 flex items-center justify-between px-6 border-b border-white/5">
             <Link href="/admin" className="flex items-center gap-2.5">
-              <Logo 
-                size={open ? "md" : "sm"} 
-                className="shrink-0 ring-2 ring-[#D4AF37]/20 transition-all duration-300" 
+              <Logo
+                size={open ? "md" : "sm"}
+                className="shrink-0 ring-2 ring-[#D4AF37]/20 transition-all duration-300"
               />
               <span
                 className={cn(
                   "text-lg font-bold tracking-tight text-white transition-opacity duration-300",
-                  !open && "lg:opacity-0 lg:hidden"
+                  !open && "lg:opacity-0 lg:hidden",
                 )}
               >
                 Admin Panel
@@ -109,19 +130,21 @@ export function AdminSidebar({
                     "flex items-center gap-4 px-3 py-3 rounded-xl transition-all group relative",
                     isActive
                       ? "bg-[#D4AF37]/10 text-[#D4AF37]"
-                      : "text-gray-400 hover:bg-white/5 hover:text-white"
+                      : "text-gray-400 hover:bg-white/5 hover:text-white",
                   )}
                 >
                   <Icon
                     className={cn(
                       "h-5 w-5 shrink-0 transition-colors",
-                      isActive ? "text-[#D4AF37]" : "group-hover:text-[#D4AF37]"
+                      isActive
+                        ? "text-[#D4AF37]"
+                        : "group-hover:text-[#D4AF37]",
                     )}
                   />
                   <span
                     className={cn(
                       "font-medium whitespace-nowrap transition-all duration-300",
-                      !open && "lg:opacity-0 lg:hidden"
+                      !open && "lg:opacity-0 lg:hidden",
                     )}
                   >
                     {link.label}
@@ -143,7 +166,7 @@ export function AdminSidebar({
             <div
               className={cn(
                 "flex items-center gap-3 p-2 rounded-xl bg-white/5 transition-all",
-                !open && "lg:justify-center"
+                !open && "lg:justify-center",
               )}
             >
               <div className="w-8 h-8 rounded-full bg-[#D4AF37] flex items-center justify-center text-[#0F1C2E] font-bold text-xs shrink-0">
@@ -152,7 +175,7 @@ export function AdminSidebar({
               <div
                 className={cn(
                   "flex flex-col min-w-0 transition-opacity",
-                  !open && "lg:hidden"
+                  !open && "lg:hidden",
                 )}
               >
                 <span className="text-sm font-semibold text-white truncate">

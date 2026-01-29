@@ -18,6 +18,4 @@ interface PricingCardWrapperProps {
   walletBalance: number;
 }
 
-export function PricingCardWrapper(props: PricingCardWrapperProps) {
-  return <PricingCard {...props} />;
-}
+export function PricingCardWrapper(props: PricingCardWrapperProps) {}

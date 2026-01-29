@@ -142,8 +142,6 @@ function SupportFilterSheet({
     if (priorityValue !== "all") filteredQuery.priority = priorityValue as any;
     if (startDate) filteredQuery.startDate = startDate;
     if (endDate) filteredQuery.endDate = endDate;
-
-    setCurrentPage(1);
     onQueryChange(filteredQuery);
   };
 

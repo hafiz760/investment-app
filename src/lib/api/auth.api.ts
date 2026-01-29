@@ -144,6 +144,4 @@ export const authApi = {
   deleteRole: async (id: string): Promise<void> => {
     await apiClient.delete(`/roles/${id}`);
   },
-
-  // Plans API
 };
